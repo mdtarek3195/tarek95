@@ -360,7 +360,7 @@ textarea.form-control {
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     padding: 20px;
-    height: 500px;
+    height: 600px;
 }
 
 .chart-boxe {
@@ -374,7 +374,7 @@ textarea.form-control {
 .chart-wrapper{
     position:relative;
     width:100%;
-    height:430px;
+    height:500px;
 }
 
 .chart-wrapper canvas{
