@@ -119,6 +119,14 @@ function loadKPIs() {
             currentBalance
         );
 
+	document.getElementById(
+		"todayExpense"
+	).textContent =
+
+		App.formatCurrency(
+			Storage.getTodayExpense()
+		);
+
     document.getElementById(
         "monthlyIncome"
     ).textContent =
