@@ -517,14 +517,160 @@
                     <canvas id="incomeExpenseChart"></canvas>
 				</div>	
 			</div>	
+           <!-- Budget + Recent Transactions -->
+            <div class="dashboard-row section">
+
+				<div class="card">
+
+					<div
+						style="
+						display:flex;
+						justify-content:space-between;
+						align-items:center;
+						margin-bottom:10px;
+						">
+
+						<h3>
+							Top Expense Categories
+						</h3>
+
+						<div class="expense-filter-wrapper">
+
+							<button
+								id="topExpenseFilterBtn"
+								class="expense-filter-btn">
+
+								<span
+									id="topExpenseFilterLabel">
+
+									This Month
+
+								</span>
+
+								▼
+
+							</button>
+
+							<div
+								id="topExpenseFilterMenu"
+								class="expense-filter-menu">
+
+							</div>
+
+						</div>
+
+					</div>
+
+					<div id="topExpenseList">
+
+					</div>
+
+				</div>
+
+				<div class="card">
+
+					<h3 class="mb-20">Spending Trend</h3>
+
+					<div
+						style="height:360px;">
+
+						<canvas
+							id="spendingTrend">
+						</canvas>
+
+					</div>
+
+				</div>
+				
+				<!-- Recent Transactions -->
+                <div class="card">
+
+                    <h3 class="mb-10">
+                        Recent 10 Transactions
+                    </h3>
+
+                    <div class="table-container">
+
+                        <table class="table">
+
+                            <thead>
+
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                            </tr>
+
+                            </thead>
+
+								<tbody id="recentTransactions"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>						
+                <!-- Budget -->
+                <div class="card">
+
+                    <h3 class="mb-10"  id="budgetStatusTitle">
+                        Budget Status
+                    </h3>
+					<div class="table-container">
+					<div class="budget-table-scroll">
+						<table class="table">
+
+							<thead>
+							<tr>
+								<th>Category</th>
+								<th>Budget</th>
+								<th>Spent</th>
+								<th>Usage</th>
+							</tr>
+							</thead>
+
+							<tbody id="dashboardBudgetBody">
+
+								<tr>
+									<td>Food</td>
+									<td>৳ 8,000</td>
+									<td>৳ 0</td>
+								</tr>
+
+								<tr>
+									<td>Transport</td>
+									<td>৳ 5,000</td>
+									<td>৳ 0</td>
+								</tr>
+
+								<tr>
+									<td>Shopping</td>
+									<td>৳ 4,000</td>
+									<td>৳ 0</td>
+								</tr>
+
+							</tbody>
+
+						</table>
+					</div>
+					</div>
+                </div>
+
+
+            </div>
+
+
+
+				
 			</div>	
-		</div>
+		
 
 
 
 			
 	
-            <!-- Budget + Recent Transactions -->
+          
 
 
 
