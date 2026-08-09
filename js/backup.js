@@ -88,12 +88,17 @@ function googleLogin(){
 
             callback: (tokenResponse)=>{
 
-                accessToken =
-                    tokenResponse.access_token;
+    console.log("LOGIN SUCCESS");
 
-                App.showToast(
-                    "Google Drive Connected"
-                );
+    console.log(tokenResponse);
+
+    accessToken =
+        tokenResponse.access_token;
+
+    App.showToast(
+        "Google Drive Connected"
+    );
+
 
             }
 
