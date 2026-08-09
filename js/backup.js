@@ -4,7 +4,17 @@
    ========================================== */
 
 const Backup = (() => {
+	
+const GOOGLE_CLIENT_ID =
+"995192416193-716fg9udsgd8kvf9r0j9sg3uni3t74ag.apps.googleusercontent.com";
 
+const DRIVE_SCOPE =
+"https://www.googleapis.com/auth/drive.file";
+
+let accessToken = null;
+
+
+	
     // =========================
     // INIT
     // =========================
@@ -60,6 +70,41 @@ function updateStatistics() {
 
 }
 
+
+	// =========================
+    // Google Login Function
+    // =========================
+function googleLogin(){
+
+    const tokenClient =
+
+        google.accounts.oauth2.initTokenClient({
+
+            client_id:
+                GOOGLE_CLIENT_ID,
+
+            scope:
+                DRIVE_SCOPE,
+
+            callback: (tokenResponse)=>{
+
+                accessToken =
+                    tokenResponse.access_token;
+
+                App.showToast(
+                    "Google Drive Connected"
+                );
+
+            }
+
+        });
+
+    tokenClient.requestAccessToken();
+
+}
+
+
+	
     // =========================
     // EXPORT BACKUP
     // =========================
@@ -365,6 +410,13 @@ function updateStatistics() {
     // =========================
 
     function bindEvents() {
+
+		document
+			.getElementById("googleLoginBtn")
+			?.addEventListener(
+			    "click",
+			    googleLogin
+			);
 
         document
         .getElementById(
