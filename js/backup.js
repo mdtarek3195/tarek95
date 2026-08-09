@@ -23,6 +23,8 @@ let accessToken = null;
 
         updateStatistics();
 
+		loadDriveBackups();
+
         bindEvents();
 
         console.log(
@@ -217,6 +219,63 @@ function googleLogin(){
     // =========================
     // GOOGLE EXPORT BACKUP
     // =========================
+
+async function loadDriveBackups() {
+
+    const body =
+        document.getElementById(
+            "driveBackupBody"
+        );
+
+    if(!body)
+        return;
+
+    const files =
+        await getDriveBackups();
+
+    body.innerHTML = "";
+
+    files.forEach(file => {
+
+        body.innerHTML += `
+
+        <tr>
+
+            <td>
+                ${file.name}
+            </td>
+
+            <td>
+                ${new Date(
+                    file.createdTime
+                ).toLocaleString()}
+            </td>
+
+            <td>
+                ${file.size || "-"}
+            </td>
+
+            <td>
+
+                <button
+                    class="btn btn-success"
+
+                    onclick="restoreFromDrive('${file.id}')">
+
+                    Restore
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+	
 async function getBackupFolderId() {
 
     const folderName =
