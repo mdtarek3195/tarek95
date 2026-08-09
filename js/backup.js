@@ -276,18 +276,25 @@ async function loadDriveBackups() {
                 ${file.size || "-"}
             </td>
 
-            <td>
-
-                <button
-                    class="btn btn-success"
-
-                    onclick="restoreFromDrive('${file.id}')">
-
-                    Restore
-
-                </button>
-
-            </td>
+			<td>
+			
+			    <button
+			        class="btn btn-success"
+			        onclick="restoreFromDrive('${file.id}')">
+			
+			        Restore
+			
+			    </button>
+			
+			    <button
+			        class="btn btn-danger"
+			        onclick="deleteDriveBackup('${file.id}')">
+			
+			        Delete
+			
+			    </button>
+			
+			</td>
 
         </tr>
 
@@ -811,6 +818,59 @@ async function getDriveBackups() {
         }, 1000);
     }
 
+async function deleteDriveBackup(fileId){
+
+    const confirmed =
+
+        confirm(
+            "Delete this backup from Google Drive?"
+        );
+
+    if(!confirmed)
+        return;
+
+    const response =
+
+        await fetch(
+
+            `https://www.googleapis.com/drive/v3/files/${fileId}`,
+
+            {
+                method: "DELETE",
+
+                headers: {
+
+                    Authorization:
+                        "Bearer " +
+                        window.driveToken
+
+                }
+
+            }
+
+        );
+
+    if(response.ok){
+
+        App.showToast(
+            "Backup Deleted"
+        );
+
+        loadDriveBackups();
+
+    }
+
+    else{
+
+        App.showToast(
+            "Delete Failed"
+        );
+
+    }
+
+}
+
+	
     // =========================
     // EVENTS
     // =========================
@@ -892,3 +952,6 @@ document.addEventListener(
 
 window.restoreFromDrive =
     Backup.restoreFromDrive;
+
+window.deleteDriveBackup =
+    deleteDriveBackup;
