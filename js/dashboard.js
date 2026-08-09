@@ -2597,17 +2597,17 @@ function initializeDailyTrendFilter(){
 
         {
             value:"7days",
-            label:"Last 7 Days"
+            label:"07 Days"
         },
 
         {
             value:"15days",
-            label:"Last 15 Days"
+            label:"15 Days"
         },
 
         {
             value:"30days",
-            label:"Last 30 Days"
+            label:"30 Days"
         },
 
     ];
