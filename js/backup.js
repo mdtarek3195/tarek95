@@ -36,6 +36,10 @@ function init() {
 
     }
 
+    console.log(
+        "Backup Module Loaded"
+    );
+
 }
 
     // =========================
