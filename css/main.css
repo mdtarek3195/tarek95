@@ -280,7 +280,7 @@ textarea.form-control {
 
     max-height: 560px;
 
-    overflow-x: scroll;
+    overflow-y: scroll;
 
 }
 .transaction-table-scroll {
