@@ -217,6 +217,71 @@ function googleLogin(){
     // =========================
     // GOOGLE EXPORT BACKUP
     // =========================
+async function getBackupFolderId() {
+
+    const folderName =
+        "ExpenseManagerBackups";
+
+    const searchUrl =
+        `https://www.googleapis.com/drive/v3/files?q=name='${folderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`;
+
+    const searchResponse =
+        await fetch(
+            searchUrl,
+            {
+                headers: {
+                    Authorization:
+                        "Bearer " +
+                        window.driveToken
+                }
+            }
+        );
+
+    const searchData =
+        await searchResponse.json();
+
+    if (
+        searchData.files &&
+        searchData.files.length > 0
+    ) {
+
+        return searchData.files[0].id;
+
+    }
+
+    const createResponse =
+        await fetch(
+            "https://www.googleapis.com/drive/v3/files",
+            {
+                method: "POST",
+                headers: {
+                    Authorization:
+                        "Bearer " +
+                        window.driveToken,
+                    "Content-Type":
+                        "application/json"
+                },
+                body: JSON.stringify({
+
+                    name:
+                        folderName,
+
+                    mimeType:
+                        "application/vnd.google-apps.folder"
+
+                })
+            }
+        );
+
+    const folder =
+        await createResponse.json();
+
+    return folder.id;
+
+}
+
+
+	
 async function backupToDrive() {
 
     if (!window.driveToken) {
@@ -287,11 +352,21 @@ async function backupToDrive() {
             .split("T")[0]
         }.json`;
 
-    const metadata = {
-        name: fileName,
-        mimeType:
-            "application/json"
-    };
+		const folderId =
+		    await getBackupFolderId();
+		
+		const metadata = {
+		
+		    name:
+		        fileName,
+		
+		    parents:
+		        [folderId],
+		
+		    mimeType:
+		        "application/json"
+
+};
 
     const form =
         new FormData();
