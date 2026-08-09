@@ -2597,7 +2597,7 @@ function initializeDailyTrendFilter(){
 
         {
             value:"7days",
-            label:"07 Days"
+            label:"7 Days"
         },
 
         {
