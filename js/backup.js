@@ -867,15 +867,17 @@ document
     // PUBLIC API
     // =========================
 
-    return {
+return {
 
-        init,
-        exportBackup,
-        importBackup,
-        resetData
+    init,
+    exportBackup,
+    importBackup,
+    resetData,
+    restoreFromDrive
 
-    };
+};
 
+	
 })();
 
 
@@ -887,3 +889,4 @@ document.addEventListener(
     "DOMContentLoaded",
     Backup.init
 );
+
