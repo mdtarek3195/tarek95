@@ -362,6 +362,113 @@
 			
             <!-- Charts Row -->
             <div class="dashboard-row section">
+			<div class="card">
+
+					<h3 class="mb-20">Daily Trend</h3>
+				<div style="
+								display:flex;
+								flex-direction:row;
+								gap:10px;
+								align-items:center;
+								justify-content:flex-end;
+								flex-wrap:nowrap;">
+								
+							<div class="expense-filter">
+							   <button
+									type="button"
+									id="dailyTrendTypeBtn"
+									class="expense-filter-btn">
+
+									<span>
+										💳
+									</span>
+
+									<span id="dailyTrendTypeLabel">
+
+										Expense
+
+									</span>
+
+									<span
+										id="dailyTrendTypeArrow"
+										class="filter-arrow">
+
+										▼
+
+									</span>
+
+								</button>
+
+								<div
+									id="dailyTrendTypeMenu"
+									class="expense-filter-menu">
+
+									<div
+										class="expense-filter-item"
+										data-type="expense">
+
+										Expense
+
+									</div>
+
+									<div
+										class="expense-filter-item"
+										data-type="income">
+
+										Income
+
+									</div>
+
+								</div>
+								<button
+									type="button"
+									id="dailyTrendFilterBtn"
+									class="expense-filter-btn">
+
+									<span class="filter-icon">
+
+										📅
+
+									</span>
+
+									<span id="dailyTrendFilterLabel">
+
+										Last 7 Days
+
+									</span>
+
+									<span
+										id="dailyTrendFilterArrow"
+										class="filter-arrow">
+
+										▼
+
+									</span>
+
+								</button>
+
+								<div
+									id="dailyTrendFilterMenu"
+									class="expense-filter-menu">
+
+								</div>
+
+							</div>
+						</div>
+
+				
+						<canvas
+							id="dailyTrendChart">
+
+						</canvas>
+
+
+				</div>
+
+
+				
+
+				
 
 				<div class="chart-box">
 
