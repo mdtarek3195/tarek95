@@ -890,3 +890,5 @@ document.addEventListener(
     Backup.init
 );
 
+window.restoreFromDrive =
+    Backup.restoreFromDrive;
