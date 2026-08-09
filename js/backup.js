@@ -40,6 +40,32 @@ function init() {
         "Backup Module Loaded"
     );
 
+//AUTO BACKUP
+const autoBackupEnabled =
+
+    localStorage.getItem(
+        "autoBackupEnabled"
+    ) === "true";
+
+const checkbox =
+
+    document.getElementById(
+        "autoBackupEnabled"
+    );
+
+if(checkbox){
+
+    checkbox.checked =
+        autoBackupEnabled;
+
+	}
+if(window.driveToken){
+
+    autoBackupDaily();
+
+}
+
+	
 }
 
     // =========================
@@ -618,7 +644,46 @@ async function getDriveBackups() {
     return data.files || [];
 
 }
-	
+
+//AUTO BACKUP
+
+async function autoBackupDaily(){
+
+    const enabled =
+
+        localStorage.getItem(
+            "autoBackupEnabled"
+        ) === "true";
+
+    if(!enabled)
+        return;
+
+    const today =
+
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+    const lastBackup =
+
+        localStorage.getItem(
+            "lastAutoBackup"
+        );
+
+    if(lastBackup === today)
+        return;
+
+    await backupToDrive();
+
+    localStorage.setItem(
+
+        "lastAutoBackup",
+
+        today
+
+    );
+
+}
 
     // =========================
     // IMPORT BACKUP
@@ -921,6 +986,35 @@ document
     backupToDrive
 );
 
+//AUTO BACKUP
+document
+.getElementById(
+    "autoBackupEnabled"
+)
+?.addEventListener(
+    "change",
+    function(){
+
+        localStorage.setItem(
+
+            "autoBackupEnabled",
+
+            this.checked
+
+        );
+
+        App.showToast(
+
+            this.checked
+                ? "Daily Auto Backup Enabled"
+                : "Daily Auto Backup Disabled"
+
+        );
+
+    }
+);
+
+	
 }
 
     // =========================
