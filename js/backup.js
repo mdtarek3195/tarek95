@@ -19,18 +19,24 @@ let accessToken = null;
     // INIT
     // =========================
 
-    function init() {
+function init() {
 
-        updateStatistics();
-
-		loadDriveBackups();
-
-        bindEvents();
-
-        console.log(
-            "Backup Module Loaded"
+    window.driveToken =
+        localStorage.getItem(
+            "driveToken"
         );
+
+    updateStatistics();
+
+    bindEvents();
+
+    if(window.driveToken){
+
+        loadDriveBackups();
+
     }
+
+}
 
     // =========================
     // STATISTICS
@@ -88,23 +94,34 @@ function googleLogin(){
             scope:
                 DRIVE_SCOPE,
 
-				callback: (tokenResponse) => {
-				
-				    accessToken =
-				        tokenResponse.access_token;
-				
-				    window.driveToken =
-				        tokenResponse.access_token;
-				
-				    console.log(
-				        "LOGIN SUCCESS"
-				    );
-				
-				    console.log(
-				        tokenResponse
-				    );
-				
-				}
+            callback: (tokenResponse) => {
+
+                accessToken =
+                    tokenResponse.access_token;
+
+                window.driveToken =
+                    tokenResponse.access_token;
+
+                localStorage.setItem(
+                    "driveToken",
+                    tokenResponse.access_token
+                );
+
+                console.log(
+                    "LOGIN SUCCESS"
+                );
+
+                console.log(
+                    tokenResponse
+                );
+
+                App.showToast(
+                    "Google Drive Connected"
+                );
+
+                loadDriveBackups();
+
+            }
 
         });
 
