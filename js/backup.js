@@ -485,15 +485,19 @@ async function backupToDrive() {
 
     if (!window.driveToken) {
 
-        alert("Please connect Google Drive first.");
+        alert(
+            "Please connect Google Drive first."
+        );
 
         return;
+
     }
 
     const backupData = {
 
         exportedAt:
-            new Date().toISOString(),
+            new Date()
+            .toISOString(),
 
         version: "1.0",
 
@@ -538,6 +542,7 @@ async function backupToDrive() {
     };
 
     const fileContent =
+
         JSON.stringify(
             backupData,
             null,
@@ -545,75 +550,123 @@ async function backupToDrive() {
         );
 
     const fileName =
+
         `expense-manager-backup-${
             new Date()
             .toISOString()
             .split("T")[0]
         }.json`;
 
-		const folderId =
-		    await getBackupFolderId();
-		
-		const metadata = {
-		
-		    name:
-		        fileName,
-		
-		    parents:
-		        [folderId],
-		
-		    mimeType:
-		        "application/json"
+    const folderId =
 
-};
+        await getBackupFolderId();
+
+    const metadata = {
+
+        name:
+            fileName,
+
+        parents:
+            [folderId],
+
+        mimeType:
+            "application/json"
+
+    };
 
     const form =
+
         new FormData();
 
     form.append(
+
         "metadata",
+
         new Blob(
+
             [JSON.stringify(metadata)],
+
             {
                 type:
-                "application/json"
+                    "application/json"
             }
+
         )
+
     );
 
     form.append(
+
         "file",
+
         new Blob(
+
             [fileContent],
+
             {
                 type:
-                "application/json"
+                    "application/json"
             }
+
         )
+
     );
 
     const response =
+
         await fetch(
+
             "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+
             {
+
                 method: "POST",
+
                 headers: {
+
                     Authorization:
                         "Bearer " +
                         window.driveToken
+
                 },
+
                 body: form
+
             }
+
         );
 
     const result =
+
         await response.json();
 
-    console.log(result);
-
-    App.showToast(
-        "Backup Uploaded To Drive"
+    console.log(
+        result
     );
+
+    if (response.ok) {
+
+        App.showToast(
+            "Backup Uploaded To Drive"
+        );
+
+        await cleanupOldBackups();
+
+        loadDriveBackups();
+
+    }
+
+    else {
+
+        console.error(
+            result
+        );
+
+        App.showToast(
+            "Backup Upload Failed"
+        );
+
+    }
 
 }
 
@@ -647,7 +700,7 @@ async function getDriveBackups() {
 
 //AUTO BACKUP
 
-async function autoBackupDaily(){
+async function autoBackupDaily() {
 
     const enabled =
 
@@ -655,7 +708,10 @@ async function autoBackupDaily(){
             "autoBackupEnabled"
         ) === "true";
 
-    if(!enabled)
+    if (!enabled)
+        return;
+
+    if (!window.driveToken)
         return;
 
     const today =
@@ -670,20 +726,35 @@ async function autoBackupDaily(){
             "lastAutoBackup"
         );
 
-    if(lastBackup === today)
+    if (lastBackup === today)
         return;
 
-    await backupToDrive();
+    try {
 
-    localStorage.setItem(
+        await backupToDrive();
 
-        "lastAutoBackup",
+        localStorage.setItem(
 
-        today
+            "lastAutoBackup",
 
-    );
-	
-	await cleanupOldBackups();
+            today
+
+        );
+
+        console.log(
+            "Daily Auto Backup Completed"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Auto Backup Failed:",
+            error
+        );
+
+    }
 
 }
 
