@@ -213,6 +213,136 @@ function googleLogin(){
     }
 
     // =========================
+    // GOOGLE EXPORT BACKUP
+    // =========================
+async function backupToDrive() {
+
+    if (!window.driveToken) {
+
+        alert("Please connect Google Drive first.");
+
+        return;
+    }
+
+    const backupData = {
+
+        exportedAt:
+            new Date().toISOString(),
+
+        version: "1.0",
+
+        transactions:
+            Storage.getTransactions(),
+
+        accounts:
+            Storage.getAccounts(),
+
+        categories:
+            Storage.getCategories(),
+
+        budgets:
+            Storage.getBudgets(),
+
+        loans:
+            Storage.getLoans
+                ? Storage.getLoans()
+                : [],
+
+        transfers:
+            Storage.getTransfers
+                ? Storage.getTransfers()
+                : [],
+
+        goals:
+            Storage.getGoals
+                ? Storage.getGoals()
+                : [],
+
+        settings:
+            localStorage.getItem(
+                "em_settings"
+            )
+                ? JSON.parse(
+                    localStorage.getItem(
+                        "em_settings"
+                    )
+                )
+                : {}
+
+    };
+
+    const fileContent =
+        JSON.stringify(
+            backupData,
+            null,
+            2
+        );
+
+    const fileName =
+        `expense-manager-backup-${
+            new Date()
+            .toISOString()
+            .split("T")[0]
+        }.json`;
+
+    const metadata = {
+        name: fileName,
+        mimeType:
+            "application/json"
+    };
+
+    const form =
+        new FormData();
+
+    form.append(
+        "metadata",
+        new Blob(
+            [JSON.stringify(metadata)],
+            {
+                type:
+                "application/json"
+            }
+        )
+    );
+
+    form.append(
+        "file",
+        new Blob(
+            [fileContent],
+            {
+                type:
+                "application/json"
+            }
+        )
+    );
+
+    const response =
+        await fetch(
+            "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+            {
+                method: "POST",
+                headers: {
+                    Authorization:
+                        "Bearer " +
+                        window.driveToken
+                },
+                body: form
+            }
+        );
+
+    const result =
+        await response.json();
+
+    console.log(result);
+
+    App.showToast(
+        "Backup Uploaded To Drive"
+    );
+
+}
+
+
+    // =========================
     // IMPORT BACKUP
     // =========================
 
@@ -451,6 +581,14 @@ function bindEvents() {
         "click",
         googleLogin
     );
+document
+.getElementById(
+    "backupDriveBtn"
+)
+?.addEventListener(
+    "click",
+    backupToDrive
+);
 
 }
 
