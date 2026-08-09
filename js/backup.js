@@ -280,7 +280,93 @@ async function getBackupFolderId() {
 
 }
 
+	//RESTORE FROM GOOGLE DRIVE
+	
+async function restoreFromDrive(fileId) {
 
+    const response =
+        await fetch(
+
+            `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
+
+            {
+                headers: {
+                    Authorization:
+                        "Bearer " +
+                        window.driveToken
+                }
+            }
+
+        );
+
+    const data =
+        await response.json();
+
+    localStorage.setItem(
+        "em_transactions",
+        JSON.stringify(
+            data.transactions || []
+        )
+    );
+
+    localStorage.setItem(
+        "em_accounts",
+        JSON.stringify(
+            data.accounts || []
+        )
+    );
+
+    localStorage.setItem(
+        "em_categories",
+        JSON.stringify(
+            data.categories || []
+        )
+    );
+
+    localStorage.setItem(
+        "em_budgets",
+        JSON.stringify(
+            data.budgets || []
+        )
+    );
+
+    localStorage.setItem(
+        "em_goals",
+        JSON.stringify(
+            data.goals || []
+        )
+    );
+
+    localStorage.setItem(
+        "em_loans",
+        JSON.stringify(
+            data.loans || []
+        )
+    );
+
+    localStorage.setItem(
+        "em_transfers",
+        JSON.stringify(
+            data.transfers || []
+        )
+    );
+
+    App.showToast(
+        "Backup Restored Successfully"
+    );
+
+    setTimeout(() => {
+
+        location.reload();
+
+    }, 1000);
+
+}
+	
+
+    // =========================
+    // BACKUP FROM GOOGLE DRIVE
+    // =========================
 	
 async function backupToDrive() {
 
@@ -418,6 +504,34 @@ async function backupToDrive() {
 
 }
 
+
+async function getDriveBackups() {
+
+    const folderId =
+        await getBackupFolderId();
+
+    const response =
+        await fetch(
+
+            `https://www.googleapis.com/drive/v3/files?q='${folderId}' in parents and trashed=false&fields=files(id,name,createdTime,size)`,
+
+            {
+                headers: {
+                    Authorization:
+                        "Bearer " +
+                        window.driveToken
+                }
+            }
+
+        );
+
+    const data =
+        await response.json();
+
+    return data.files || [];
+
+}
+	
 
     // =========================
     // IMPORT BACKUP
