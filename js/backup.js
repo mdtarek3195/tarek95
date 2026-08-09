@@ -933,7 +933,8 @@ return {
     exportBackup,
     importBackup,
     resetData,
-    restoreFromDrive
+    restoreFromDrive,
+    deleteDriveBackup
 
 };
 
@@ -954,4 +955,4 @@ window.restoreFromDrive =
     Backup.restoreFromDrive;
 
 window.deleteDriveBackup =
-    deleteDriveBackup;
+    Backup.deleteDriveBackup;
