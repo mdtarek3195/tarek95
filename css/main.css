@@ -265,15 +265,22 @@ textarea.form-control {
 
     max-height: 560px;
 
-    overflow-y: scroll;
+    overflow-x: scroll;
 
 }
 
+.budget-table-page-scroll {
+
+    max-height: 560px;
+
+    overflow-x: scroll;
+
+}
 .budget-table-scroll {
 
     max-height: 560px;
 
-    overflow-y: scroll;
+    overflow-x: scroll;
 
 }
 .transaction-table-scroll {
