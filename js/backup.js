@@ -682,9 +682,63 @@ async function autoBackupDaily(){
         today
 
     );
+	
+	await cleanupOldBackups();
 
 }
 
+//KEEP ONLY 30 BACKUPS
+
+async function cleanupOldBackups(){
+
+    const files =
+        await getDriveBackups();
+
+    files.sort(
+
+        (a,b) =>
+
+            new Date(
+                b.createdTime
+            )
+
+            -
+
+            new Date(
+                a.createdTime
+            )
+
+    );
+
+    const oldFiles =
+        files.slice(30);
+
+    for(const file of oldFiles){
+
+        await fetch(
+
+            `https://www.googleapis.com/drive/v3/files/${file.id}`,
+
+            {
+                method: "DELETE",
+
+                headers: {
+
+                    Authorization:
+                        "Bearer " +
+                        window.driveToken
+
+                }
+
+            }
+
+        );
+
+    }
+
+}
+
+	
     // =========================
     // IMPORT BACKUP
     // =========================
