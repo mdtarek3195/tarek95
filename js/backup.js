@@ -86,21 +86,23 @@ function googleLogin(){
             scope:
                 DRIVE_SCOPE,
 
-            callback: (tokenResponse)=>{
-
-    console.log("LOGIN SUCCESS");
-
-    console.log(tokenResponse);
-
-    accessToken =
-        tokenResponse.access_token;
-
-    App.showToast(
-        "Google Drive Connected"
-    );
-
-
-            }
+				callback: (tokenResponse) => {
+				
+				    accessToken =
+				        tokenResponse.access_token;
+				
+				    window.driveToken =
+				        tokenResponse.access_token;
+				
+				    console.log(
+				        "LOGIN SUCCESS"
+				    );
+				
+				    console.log(
+				        tokenResponse
+				    );
+				
+				}
 
         });
 
