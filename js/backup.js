@@ -409,42 +409,45 @@ function googleLogin(){
     // EVENTS
     // =========================
 
-    function bindEvents() {
+function bindEvents() {
 
-		document
-			.getElementById("googleLoginBtn")
-			?.addEventListener(
-			    "click",
-			    googleLogin
-			);
+    document
+    .getElementById(
+        "exportBackupBtn"
+    )
+    ?.addEventListener(
+        "click",
+        exportBackup
+    );
 
-        document
-        .getElementById(
-            "exportBackupBtn"
-        )
-        ?.addEventListener(
-            "click",
-            exportBackup
-        );
+    document
+    .getElementById(
+        "importBackupBtn"
+    )
+    ?.addEventListener(
+        "click",
+        importBackup
+    );
 
-        document
-        .getElementById(
-            "importBackupBtn"
-        )
-        ?.addEventListener(
-            "click",
-            importBackup
-        );
+    document
+    .getElementById(
+        "resetDataBtn"
+    )
+    ?.addEventListener(
+        "click",
+        resetData
+    );
 
-        document
-        .getElementById(
-            "resetDataBtn"
-        )
-        ?.addEventListener(
-            "click",
-            resetData
-        );
-    }
+    document
+    .getElementById(
+        "googleLoginBtn"
+    )
+    ?.addEventListener(
+        "click",
+        googleLogin
+    );
+
+}
 
     // =========================
     // PUBLIC API
