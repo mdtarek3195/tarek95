@@ -242,9 +242,14 @@ function generateStatement() {
 
     const amount =
 
-        normalAmount +
+    Number(
 
-        emiTotal;
+        (
+            normalAmount +
+            emiTotal
+        ).toFixed(2)
+
+    );
 
     if (amount === 0) {
 
@@ -632,7 +637,12 @@ function saveEMI() {
         amount,
 
         emiAmount:
-            amount / months,
+
+    Number(
+        (
+            amount / months
+        ).toFixed(2)
+    ),
 
         months,
 
@@ -1214,13 +1224,18 @@ function payStatement(id) {
 
     statement.remaining =
 
-        Number(
-            statement.amount
-        ) -
+    Number(
 
-        Number(
-            statement.paid
-        );
+        (
+            Number(statement.amount)
+
+            -
+
+            Number(statement.paid)
+
+        ).toFixed(2)
+
+    );
 
     if (
 
