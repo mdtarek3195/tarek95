@@ -311,20 +311,41 @@ function generateStatement() {
 
         emiDetails:
 
-            emis.map(
-                emi => ({
+emiDetails:
 
-                    item:
-                        emi.item,
+    emis.map(
+        emi => ({
 
-                    amount:
-                        emi.emiAmount,
+            item:
+                emi.item,
 
-                    remainingMonths:
-                        emi.remainingMonths
+            type:
+                emi.emiType,
 
-                })
-            )
+            description:
+
+                emi.emiType ===
+                "loan"
+
+                    ?
+
+                    "Loan EMI"
+
+                    :
+
+                    `${emi.item} EMI`,
+
+            amount:
+                emi.emiAmount,
+
+            remainingMonths:
+                emi.remainingMonths
+
+        })
+    )
+
+                
+            
 
     });
 
@@ -1050,8 +1071,8 @@ function viewStatement(id) {
                     <tr>
 
                         <td>
-                            ${emi.item}
-                        </td>
+    ${emi.description}
+</td>
 
                         <td>
                             ${App.formatCurrency(
