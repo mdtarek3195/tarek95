@@ -520,6 +520,13 @@ function saveEMI() {
         document.getElementById(
             "emiItem"
         ).value;
+	const emiType =
+
+    document
+    .getElementById(
+        "emiType"
+    )
+    .value;
 
     const card =
         document.getElementById(
@@ -561,12 +568,14 @@ function saveEMI() {
 
     Storage.addEmiPurchase({
 
-        item,
+    item,
 
-        card,
+    emiType,
 
-        totalAmount:
-            amount,
+    card,
+
+    totalAmount:
+        amount,
 
         emiAmount:
             amount / months,
