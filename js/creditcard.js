@@ -28,24 +28,21 @@ const CreditCards = (() => {
     }
 
 function loadEMICards() {
+const cards =
 
-    const cards =
+    Storage.getAccounts()
 
-        Storage.getAccounts()
+    .filter(a =>
 
-        .filter(
+        String(a.type || "")
+        .toLowerCase()
+        .replaceAll(" ", "")
 
-            a =>
+        ===
 
-                String(a.type)
-                .toLowerCase()
-                .replaceAll(" ", "")
+        "creditcard"
 
-                ===
-
-                "creditcard"
-
-        );
+    );
 
     const emiSelect =
 
@@ -1437,16 +1434,19 @@ window.closeStatementModal =
 
         const cards =
 
-            Storage
-            .getAccounts()
+    Storage.getAccounts()
 
-            .filter(
+    .filter(a =>
 
-                a =>
-                a.type ===
-                "creditcard"
+        String(a.type || "")
+        .toLowerCase()
+        .replaceAll(" ", "")
 
-            );
+        ===
+
+        "creditcard"
+
+    );
 
         const container =
 
