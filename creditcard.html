@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts - Expense Manager</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+	<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+            <h2> <a href="index.html">Expense Manager</a></h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+
+                <li>
+                    <a href="index.html">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="transactions.html">
+                        💰 Transactions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="accounts.html">
+                        🏦 Accounts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="creditcard.html"  class="active">
+                        💳 Credit Card
+                    </a>
+                </li>
+
+                <li>
+                    <a href="creditcard-payment.html">
+                        ✅ Credit Card Payment
+                    </a>
+                </li>
+				
+				<li>
+					<a href="loan.html">
+						💵 Loans
+					</a>
+				</li>
+
+                <li>
+                    <a href="categories.html">
+                        📂 Categories
+                    </a>
+                </li>
+
+                <li>
+                    <a href="budget.html">
+                        🎯 Budget
+                    </a>
+                </li>
+
+                <li>
+                    <a href="goals.html">
+                        🚀 Goals
+                    </a>
+                </li>
+
+                <li>
+                    <a href="charts.html">
+                        💹 Charts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="reports.html">
+                        📈 Reports
+                    </a>
+                </li>
+				<li>
+
+				<a href="transfer.html">
+
+					🔄 Account Transfer
+
+				</a>
+
+				</li>
+				<li>
+				<a href="statement.html">
+					📄 Account Statement
+				</a>
+				</li>
+
+				<li>
+
+					<a href="networth.html">
+
+						💎 Net Worth
+
+					</a>
+
+				</li>
+
+                <li>
+                    <a href="recurring.html">
+                        🔁 Recurring
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        ⚙ Settings
+                    </a>
+                </li>
+				<li>
+                    <a href="backup.html">
+                        💾 Backup & Restore
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+    <!-- Main Content -->
+    <main class="main">
+
+        <header class="header">
+
+            <div class="header-left">
+
+                <button class="menu-toggle" id="menuToggle">
+                    ☰
+                </button>
+
+                <div class="header-title">
+                    Credit Card Summary Dashboard
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="content">
+
+			<!-- KPI -->
+
+			<div class="kpi-grid">
+
+				<div class="card">
+
+					<div class="card-title">
+						Total Credit Limit
+					</div>
+
+					<div
+						class="card-value"
+						id="totalCardLimit">
+
+						৳0
+
+					</div>
+
+				</div>
+
+				<div class="card">
+
+					<div class="card-title">
+						Outstanding
+					</div>
+
+					<div
+						class="card-value"
+						id="totalOutstanding">
+
+						৳0
+
+					</div>
+
+				</div>
+
+				<div class="card">
+
+					<div class="card-title">
+						Available Credit
+					</div>
+
+					<div
+						class="card-value"
+						id="availableCredit">
+
+						৳0
+
+					</div>
+
+				</div>
+
+				<div class="card">
+
+					<div class="card-title">
+						Utilization
+					</div>
+
+					<div
+						class="card-value"
+						id="utilizationPercent">
+
+						0%
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- Cards -->
+
+			<div class="card mt-20">
+
+				<h3>
+					Credit Cards
+				</h3>
+
+				<div
+					id="creditCardList">
+
+				</div>
+
+			</div>
+			
+			<!-- ===================================== -->
+			<!-- EMI PURCHASE -->
+			<!-- ===================================== -->
+
+			<div class="card mt-20">
+
+				<h3>
+					EMI Purchase
+				</h3>
+
+				<div class="form-group">
+
+					<label class="form-label">
+						Item Name
+					</label>
+
+					<input
+						type="text"
+						id="emiItem"
+						class="form-control"
+						placeholder="Laptop / Mobile">
+
+				</div>
+
+				<div class="form-group">
+
+					<label class="form-label">
+						Credit Card
+					</label>
+
+					<select
+						id="emiCard"
+						class="form-control">
+
+					</select>
+
+				</div>
+
+				<div class="form-group">
+
+					<label class="form-label">
+						Purchase Amount
+					</label>
+
+					<input
+						type="number"
+						id="emiAmount"
+						class="form-control">
+
+				</div>
+
+				<div class="form-group">
+
+					<label class="form-label">
+						Months
+					</label>
+
+					<input
+						type="number"
+						id="emiMonths"
+						class="form-control"
+						value="12">
+
+				</div>
+
+				<div class="form-group">
+
+					<label class="form-label">
+						Start Date
+					</label>
+
+					<input
+						type="date"
+						id="emiStartDate"
+						class="form-control">
+
+				</div>
+
+				<button
+					class="btn btn-primary"
+					id="saveEmiBtn">
+
+					Create EMI
+
+				</button>
+
+			</div>
+
+
+			<!-- ===================================== -->
+			<!-- EMI LIST -->
+			<!-- ===================================== -->
+
+			<div class="card mt-20">
+
+				<h3>
+					Active EMI List
+				</h3>
+
+				<div class="table-container">
+
+					<table class="table">
+
+						<thead>
+
+							<tr>
+
+								<th>Item</th>
+
+								<th>Card</th>
+
+								<th>Total</th>
+
+								<th>Monthly EMI</th>
+
+								<th>Remaining</th>
+
+								<th>Action</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody id="emiTableBody">
+
+							<tr>
+
+								<td colspan="6"
+									class="text-center">
+
+									No EMI Found
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+			
+
+		
+			<div class="card mt-20">
+			
+		<div class="form-group">
+
+			<label>
+				Statement Card
+			</label>
+
+			<select
+				id="statementCard"
+				class="form-control">
+
+			</select>
+
+		</div>
+		<div class="form-group">
+
+			<label class="form-label">
+				Statement Month
+			</label>
+
+			<input
+				type="month"
+				id="statementMonth"
+				class="form-control">
+
+		</div>
+
+		<button
+			id="generateStatementBtn"
+			class="btn btn-primary">
+
+			Generate Statement
+
+		</button>
+
+
+				<h3>
+					Statement History
+				</h3>
+
+				<div class="table-container">
+
+					<table class="table">
+
+						<thead>
+
+							<tr>
+
+								<th>Card</th>
+
+								<th>Statement Date</th>
+
+								<th>Due Date</th>
+
+								<th>Amount</th>
+
+								<th>Paid</th>
+
+								<th>Remaining</th>
+
+								<th>Status</th>
+
+								<th>Action</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody id="statementTableBody">
+
+							<tr>
+
+								<td colspan="7"
+									class="text-center">
+
+									No Statements Found
+
+								</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+
+		<div id="statementModal" class="modal" 
+			class="modal-overlay"
+			style="display:none;">
+
+			<div class="modal-content">
+
+				<span 
+					class="close"
+					onclick="closeStatementModal()">
+
+					&times;
+
+				</span>
+
+				<div id="statementDetails">
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+
+
+            
+        </section>
+
+    </main>
+
+</div>
+
+<!-- Overlay -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay">
+</div>
+
+<!-- Scripts -->
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/creditcard.js"></script>
+
+<script>
+
+const sidebar =
+document.getElementById('sidebar');
+
+const menuToggle =
+document.getElementById('menuToggle');
+
+const sidebarOverlay =
+document.getElementById('sidebarOverlay');
+
+menuToggle?.addEventListener('click', () => {
+
+    sidebar.classList.toggle('open');
+
+    sidebarOverlay.classList.toggle('show');
+
+});
+
+sidebarOverlay?.addEventListener('click', () => {
+
+    sidebar.classList.remove('open');
+
+    sidebarOverlay.classList.remove('show');
+
+});
+
+</script>
+
+</body>
+</html>
