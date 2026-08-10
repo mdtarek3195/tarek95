@@ -5,35 +5,45 @@ function init() {
     try {
 
         loadSummary();
-        console.log("1");
 
         renderCards();
-        console.log("2");
 
         loadEMICards();
-        console.log("3");
 
         loadEMITable();
-        console.log("4");
 
         loadStatementTable();
-        console.log("5");
 
         bindEMIEvents();
-        console.log("6");
+
+        const statementMonth =
+            document.getElementById(
+                "statementMonth"
+            );
+
+        if (statementMonth) {
+
+            statementMonth.value =
+                new Date()
+                .toISOString()
+                .slice(0, 7);
+
+        }
 
     }
 
-    catch(err) {
-
-        alert(err.message);
+    catch (err) {
 
         console.error(err);
+
+        alert(
+            "Credit Card Module Error:\n" +
+            err.message
+        );
 
     }
 
 }
-
 	
 
 function loadEMICards() {
@@ -1605,4 +1615,4 @@ document.addEventListener(
     CreditCards.init
 
 );
-alert("creditcard.js loaded");
+
