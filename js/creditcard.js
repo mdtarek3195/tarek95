@@ -14,16 +14,22 @@ const CreditCards = (() => {
 
 		bindEMIEvents();
 		
-		document
-		.getElementById(
-			"statementMonth"
-		)
-		.value =
+		
+		const statementMonth =
+
+    document.getElementById(
+        "statementMonth"
+    );
+
+if (statementMonth) {
+
+    statementMonth.value =
 
         new Date()
         .toISOString()
         .slice(0, 7);
-		
+
+}
 
     }
 
@@ -323,7 +329,7 @@ function generateStatement() {
                 })
             ),
 
-        emiDetails:
+    
 
 emiDetails:
 
