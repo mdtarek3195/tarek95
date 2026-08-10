@@ -914,6 +914,8 @@ window.downloadStatement =
 
 
 
+
+            
 function viewStatement(id) {
 
     const statement =
@@ -927,38 +929,6 @@ function viewStatement(id) {
     if (!statement)
         return;
 
-    const transactions =
-
-        Storage
-        .getTransactions()
-
-        .filter(t =>
-
-            t.account ===
-            statement.card &&
-
-            t.date.startsWith(
-                statement.month
-            )
-
-        )
-
-        .filter(
-            t => !t.isEmi
-        );
-
-    const emis =
-
-        Storage
-        .getEmiPurchases()
-
-        .filter(emi =>
-
-            emi.card ===
-            statement.card
-
-        );
-
     document
     .getElementById(
         "statementDetails"
@@ -966,30 +936,22 @@ function viewStatement(id) {
     .innerHTML = `
 
         <h3>
-
             ${statement.card}
-
         </h3>
 
         <p>
-
             Statement:
             ${statement.month}
-
         </p>
 
         <p>
-
             Statement Date:
             ${statement.statementDate}
-
         </p>
 
         <p>
-
             Due Date:
             ${statement.dueDate}
-
         </p>
 
         <hr>
@@ -1016,7 +978,9 @@ function viewStatement(id) {
 
             <tbody>
 
-                ${transactions.map(t => `
+                ${(statement.transactions || [])
+
+                .map(t => `
 
                     <tr>
 
@@ -1025,7 +989,7 @@ function viewStatement(id) {
                         </td>
 
                         <td>
-                            ${t.note || t.category}
+                            ${t.description}
                         </td>
 
                         <td>
@@ -1054,7 +1018,7 @@ function viewStatement(id) {
 
                 <tr>
 
-                    <th>Item</th>
+                    <th>Description</th>
 
                     <th>Monthly EMI</th>
 
@@ -1066,25 +1030,36 @@ function viewStatement(id) {
 
             <tbody>
 
-                ${emis.map(emi => `
+                ${(statement.emiDetails || [])
+
+                .map(emi => `
 
                     <tr>
 
                         <td>
-    ${
-        emi.description ||
-        emi.item
-    }
-</td>
 
-                        <td>
-                            ${App.formatCurrency(
-                                emi.emiAmount
-                            )}
+                            ${
+                                emi.description ||
+
+                                emi.item ||
+
+                                "EMI"
+                            }
+
                         </td>
 
                         <td>
+
+                            ${App.formatCurrency(
+                                emi.amount
+                            )}
+
+                        </td>
+
+                        <td>
+
                             ${emi.remainingMonths}
+
                         </td>
 
                     </tr>
@@ -1101,7 +1076,7 @@ function viewStatement(id) {
 
             Total:
             ${App.formatCurrency(
-                statement.amount
+                statement.amount || 0
             )}
 
         </h4>
@@ -1142,6 +1117,10 @@ function viewStatement(id) {
         "block";
 
 }
+
+
+
+	
 
 
 function payStatement(id) {
