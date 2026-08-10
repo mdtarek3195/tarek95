@@ -32,17 +32,34 @@ const cards =
 
     Storage.getAccounts()
 
-    .filter(a =>
+    
+.filter(a => {
 
-        String(a.type || "")
+    const type =
+
+        String(
+            a.type || ""
+        )
+
         .toLowerCase()
-        .replaceAll(" ", "")
+        .replaceAll(" ", "");
 
-        ===
+    return (
 
-        "creditcard"
+        type === "creditcard" ||
+
+        type === "card" ||
+
+        type === "cc"
 
     );
+
+})
+    
+
+        
+
+
 
     const emiSelect =
 
@@ -1436,17 +1453,28 @@ window.closeStatementModal =
 
     Storage.getAccounts()
 
-    .filter(a =>
+    .filter(a => {
 
-        String(a.type || "")
-        .toLowerCase()
-        .replaceAll(" ", "")
+        const type =
 
-        ===
+            String(
+                a.type || ""
+            )
 
-        "creditcard"
+            .toLowerCase()
+            .replaceAll(" ", "");
 
-    );
+        return (
+
+            type === "creditcard" ||
+
+            type === "card" ||
+
+            type === "cc"
+
+        );
+
+    });
 
         const container =
 
