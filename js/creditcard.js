@@ -1071,7 +1071,10 @@ function viewStatement(id) {
                     <tr>
 
                         <td>
-    ${emi.description}
+    ${
+        emi.description ||
+        emi.item
+    }
 </td>
 
                         <td>
@@ -1173,6 +1176,24 @@ function payStatement(id) {
     if (!statement)
         return;
 
+    if (
+
+        payment >
+
+        Number(
+            statement.remaining
+        )
+
+    ) {
+
+        alert(
+            "Payment exceeds outstanding amount"
+        );
+
+        return;
+
+    }
+
     statement.paid =
 
         Number(
@@ -1190,65 +1211,118 @@ function payStatement(id) {
         );
 
     if (
+
         statement.remaining <= 0
+
     ) {
 
         statement.remaining = 0;
 
         statement.status =
-					"Paid";
+            "Paid";
 
-			} else {
+    } else {
 
-				statement.status =
-					"Partial";
+        statement.status =
+            "Partial";
 
-			}
-		const accounts =
+    }
 
-			Storage
-			.getAccounts();
+    const accounts =
 
-		const card =
+        Storage
+        .getAccounts();
 
-			accounts.find(
-				a =>
-					a.name ===
-					statement.card
-			);
+    const card =
 
-		if (card) {
+        accounts.find(
 
-			card.balance =
+            a =>
 
-				Number(
-					card.balance || 0
-				)
+                a.name ===
+                statement.card
 
-				-
+        );
 
-				payment;
+    if (card) {
 
-			Storage
-			.saveAccounts(
-				accounts
-			);
+        card.balance =
 
-		}
-    Storage
-    .saveCardStatements(
+            Math.max(
+
+                0,
+
+                Number(
+                    card.balance || 0
+                ) - payment
+
+            );
+
+        Storage.saveAccounts(
+            accounts
+        );
+
+    }
+
+    const emis =
+
+        Storage
+        .getEmiPurchases();
+
+    emis.forEach(emi => {
+
+        if (
+
+            emi.card ===
+            statement.card &&
+
+            emi.remainingMonths > 0
+
+        ) {
+
+            emi.remainingMonths--;
+
+            if (
+
+                emi.remainingMonths <= 0
+
+            ) {
+
+                emi.remainingMonths = 0;
+
+                emi.status =
+                    "completed";
+
+            }
+
+        }
+
+    });
+
+    Storage.saveEmiPurchases(
+        emis
+    );
+
+    Storage.saveCardStatements(
         statements
     );
+
+    loadSummary();
+
+    renderCards();
+
+    loadEMITable();
 
     loadStatementTable();
 
     viewStatement(id);
 
     App.showToast(
-        "Payment Added"
+        "Payment Added Successfully"
     );
 
 }
+
 window.payStatement =
     payStatement;
 	
