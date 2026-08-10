@@ -667,12 +667,22 @@ function loadEMITable() {
             <tr>
 
                 <td>
-                    ${emi.item}
-                </td>
+    ${emi.item}
+</td>
 
-                <td>
-                    ${emi.card}
-                </td>
+<td>
+
+    ${emi.emiType === "loan"
+
+        ? "Loan EMI"
+
+        : "Purchase EMI"}
+
+</td>
+
+<td>
+    ${emi.card}
+</td>
 
                 <td>
                     ${App.formatCurrency(
