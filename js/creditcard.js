@@ -1605,3 +1605,4 @@ document.addEventListener(
     CreditCards.init
 
 );
+alert("creditcard.js loaded");
