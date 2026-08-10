@@ -1,37 +1,40 @@
 const CreditCards = (() => {
 
-    function init() {
+function init() {
+
+    try {
 
         loadSummary();
+        console.log("1");
 
         renderCards();
-		
-		loadEMICards();
+        console.log("2");
 
-		loadEMITable();
-		
-		loadStatementTable();
+        loadEMICards();
+        console.log("3");
 
-		bindEMIEvents();
-		
-		
-		const statementMonth =
+        loadEMITable();
+        console.log("4");
 
-    document.getElementById(
-        "statementMonth"
-    );
+        loadStatementTable();
+        console.log("5");
 
-if (statementMonth) {
+        bindEMIEvents();
+        console.log("6");
 
-    statementMonth.value =
+    }
 
-        new Date()
-        .toISOString()
-        .slice(0, 7);
+    catch(err) {
+
+        alert(err.message);
+
+        console.error(err);
+
+    }
 
 }
 
-    }
+	
 
 function loadEMICards() {
 const cards =
