@@ -573,119 +573,14 @@ function bindEMIEvents() {
 
 }
 
-function saveEMI() {
 
-    const item =
-        document.getElementById(
-            "emiItem"
-        ).value;
-	const emiType =
 
-    document
-    .getElementById(
-        "emiType"
-    )
-    .value;
 
-    const card =
-        document.getElementById(
-            "emiCard"
-        ).value;
+saveEMI()
 
-    const amount =
-        Number(
-            document.getElementById(
-                "emiAmount"
-            ).value
-        );
+	
 
-    const months =
-        Number(
-            document.getElementById(
-                "emiMonths"
-            ).value
-        );
-
-    const startDate =
-        document.getElementById(
-            "emiStartDate"
-        ).value;
-
-    if (
-        !item ||
-        !amount ||
-        !months
-    ) {
-
-        alert(
-            "Fill all fields"
-        );
-
-        return;
-
-    }
-
-    Storage.addEmiPurchase({
-
-    item,
-
-    emiType,
-
-    card,
-
-    totalAmount:
-        amount,
-
-        emiAmount:
-
-    Number(
-        (
-            amount / months
-        ).toFixed(2)
-    ),
-
-        months,
-
-        remainingMonths:
-            months,
-
-        startDate,
-
-        status:
-            "active"
-
-    });
-	const transactions =
-    Storage.getTransactions();
-
-	const trx =
-		transactions.find(
-
-			t =>
-
-				t.account === card &&
-
-				Number(t.amount) === amount
-
-		);
-
-	if (trx) {
-
-		trx.isEmi = true;
-
-		Storage.saveTransactions(
-			transactions
-		);
-
-	}
-
-    loadEMITable();
-
-    App.showToast(
-        "EMI Created"
-    );
-
-}
+	
 
 function loadEMITable() {
 
@@ -1166,46 +1061,39 @@ function viewStatement(id) {
 	
 
 
+
 function payStatement(id) {
 
     const payment = Number(
-
         prompt(
             "Enter Payment Amount"
         )
-
     );
 
     if (
-
         !payment ||
-
         payment <= 0
-
-    ) return;
+    ) {
+        return;
+    }
 
     const statements =
-
-        Storage
-        .getCardStatements();
+        Storage.getCardStatements();
 
     const statement =
-
         statements.find(
             s => s.id === id
         );
 
-    if (!statement)
+    if (!statement) {
         return;
+    }
 
     if (
-
         payment >
-
         Number(
-            statement.remaining
+            statement.remaining || 0
         )
-
     ) {
 
         alert(
@@ -1224,23 +1112,15 @@ function payStatement(id) {
 
     statement.remaining =
 
-    Number(
-
-        (
-            Number(statement.amount)
-
-            -
-
-            Number(statement.paid)
-
-        ).toFixed(2)
-
-    );
+        Number(
+            (
+                Number(statement.amount) -
+                Number(statement.paid)
+            ).toFixed(2)
+        );
 
     if (
-
         statement.remaining <= 0
-
     ) {
 
         statement.remaining = 0;
@@ -1256,34 +1136,23 @@ function payStatement(id) {
     }
 
     const accounts =
-
-        Storage
-        .getAccounts();
+        Storage.getAccounts();
 
     const card =
-
         accounts.find(
-
             a =>
-
                 a.name ===
                 statement.card
-
         );
 
     if (card) {
 
-        card.balance =
-
-            Math.max(
-
-                0,
-
-                Number(
-                    card.balance || 0
-                ) - payment
-
-            );
+        card.balance = Math.max(
+            0,
+            Number(
+                card.balance || 0
+            ) - payment
+        );
 
         Storage.saveAccounts(
             accounts
@@ -1292,9 +1161,7 @@ function payStatement(id) {
     }
 
     const emis =
-
-        Storage
-        .getEmiPurchases();
+        Storage.getEmiPurchases();
 
     emis.forEach(emi => {
 
@@ -1307,15 +1174,44 @@ function payStatement(id) {
 
         ) {
 
+            if (
+                emi.remainingAmount ===
+                undefined
+            ) {
+
+                emi.remainingAmount =
+                    Number(
+                        emi.totalAmount || 0
+                    );
+
+            }
+
             emi.remainingMonths--;
 
+            emi.remainingAmount =
+
+                Number(
+                    (
+                        emi.remainingAmount -
+                        emi.emiAmount
+                    ).toFixed(2)
+                );
+
             if (
+                emi.remainingAmount < 0
+            ) {
 
+                emi.remainingAmount = 0;
+
+            }
+
+            if (
                 emi.remainingMonths <= 0
-
             ) {
 
                 emi.remainingMonths = 0;
+
+                emi.remainingAmount = 0;
 
                 emi.status =
                     "completed";
@@ -1349,9 +1245,10 @@ function payStatement(id) {
     );
 
 }
+        
+            
 
-window.payStatement =
-    payStatement;
+    
 	
 
 function closeStatementModal() {
