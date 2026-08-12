@@ -1020,8 +1020,10 @@ function deleteEmi(id) {
 window.deleteEmi =
     deleteEmi;	
 		
-		
-		
+
+
+
+
 function deleteStatement(id) {
 
     if (
@@ -1078,9 +1080,7 @@ function deleteStatement(id) {
                 (
                     Number(
                         bank.balance || 0
-                    )
-
-                    +
+                    ) +
 
                     paidAmount
 
@@ -1097,15 +1097,59 @@ function deleteStatement(id) {
     }
 
     /* =====================
-       Restore EMI Tracker
+       Restore Transactions
+    ===================== */
+
+    const allTransactions =
+        Storage.getTransactions();
+
+    allTransactions.forEach(t => {
+
+        if (
+
+            t.account ===
+            statement.card &&
+
+            t.statementGenerated
+
+        ) {
+
+            const exists =
+                statement.transactions?.some(
+
+                    st =>
+
+                        Number(
+                            st.amount
+                        ) ===
+
+                        Number(
+                            t.amount
+                        )
+
+                );
+
+            if (exists) {
+
+                t.statementGenerated =
+                    false;
+
+            }
+
+        }
+
+    });
+
+    Storage.saveTransactions(
+        allTransactions
+    );
+
+    /* =====================
+       Restore EMI
     ===================== */
 
     if (
-
-        paidAmount > 0 &&
-
         statement.emiDetails
-
     ) {
 
         const emis =
@@ -1128,24 +1172,26 @@ function deleteStatement(id) {
                 if (!emi)
                     return;
 
-                emi.remainingAmount = Number(
+                emi.remainingAmount =
+                    Number(
 
-                    (
-                        Number(
-                            emi.remainingAmount || 0
-                        )
+                        (
+                            Number(
+                                emi.remainingAmount || 0
+                            ) +
 
-                        +
+                            Number(
+                                stmtEmi.amount || 0
+                            )
 
-                        Number(
-                            emi.emiAmount || 0
-                        )
+                        ).toFixed(2)
 
-                    ).toFixed(2)
+                    );
 
-                );
-
-                emi.remainingMonths++;
+                emi.remainingMonths =
+                    Number(
+                        emi.remainingMonths || 0
+                    ) + 1;
 
                 emi.status =
                     "active";
@@ -1184,8 +1230,10 @@ function deleteStatement(id) {
 
     loadStatementTable();
 
+    viewStatement?.(null);
+
     App.showToast(
-        "Statement Deleted"
+        "Statement Deleted Successfully"
     );
 
 }
@@ -1193,6 +1241,14 @@ function deleteStatement(id) {
 window.deleteStatement =
     deleteStatement;
 
+	
+		
+
+            
+
+
+
+					
 
 
 
