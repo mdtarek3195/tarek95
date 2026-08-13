@@ -1401,7 +1401,9 @@ function viewStatement(id) {
         <h4>
             Transactions
         </h4>
-
+		
+		
+		<div class="table-container">
         <table class="table">
 
             <thead>
@@ -1447,13 +1449,15 @@ function viewStatement(id) {
             </tbody>
 
         </table>
+		</div>
 
         <hr>
 
         <h4>
             EMI Installments
         </h4>
-
+		
+		<div class="table-container">
         <table class="table">
 
             <thead>
@@ -1525,6 +1529,7 @@ function viewStatement(id) {
             </tbody>
 
         </table>
+		</div>
 
         <hr>
 
