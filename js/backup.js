@@ -187,6 +187,12 @@ function googleLogin(){
             budgets:
                 Storage.getBudgets(),
 				
+			cardStatements:
+				Storage.getCardStatements(),
+
+			emiPurchases:
+				Storage.getEmiPurchases()
+				
 			loans: Storage.getLoans
 				? Storage.getLoans()
 				: [],
@@ -442,6 +448,20 @@ async function restoreFromDrive(fileId) {
             data.budgets || []
         )
     );
+	
+    localStorage.setItem(
+        "em_card_statements",
+        JSON.stringify(
+            data.cardStatements || []
+        )
+    );
+
+    localStorage.setItem(
+        "em_emi_purchases",
+        JSON.stringify(
+            data.emiPurchases || []
+        )
+    );	
 
     localStorage.setItem(
         "em_goals",
@@ -512,6 +532,12 @@ async function backupToDrive() {
 
         budgets:
             Storage.getBudgets(),
+		
+		budgets:
+            Storage.getCardStatements(),
+			
+		budgets:
+            Storage.getEmiPurchases(),
 
         loans:
             Storage.getLoans
@@ -889,6 +915,20 @@ async function cleanupOldBackups(){
                         data.budgets || []
                     )
                 );
+
+                localStorage.setItem(
+                    "em_card_statements",
+                    JSON.stringify(
+                        data.cardStatements || []
+                    )
+                );
+
+                localStorage.setItem(
+                    "em_emi_purchases",
+                    JSON.stringify(
+                        data.emiPurchases || []
+                    )
+                );
 				
 				localStorage.setItem(
 					"em_loans",
@@ -981,13 +1021,22 @@ async function cleanupOldBackups(){
         localStorage.removeItem(
             "em_budgets"
         );
+		
+		localStorage.removeItem(
+            "em_card_statements"
+        );
+		
+		localStorage.removeItem(
+            "em_emi_purchases"
+        );
+		
 		localStorage.removeItem(
 			"em_loans"
 		);
 
        localStorage.removeItem(
-    "em_transfers"
-);
+			"em_transfers"
+		);
 
         localStorage.removeItem(
             "em_goals"
