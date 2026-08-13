@@ -191,7 +191,7 @@ function googleLogin(){
 				Storage.getCardStatements(),
 
 			emiPurchases:
-				Storage.getEmiPurchases()
+				Storage.getEmiPurchases(),
 				
 			loans: Storage.getLoans
 				? Storage.getLoans()
