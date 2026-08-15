@@ -18,7 +18,7 @@ const Storage = (() => {
 		CARD_PAYMENTS: "em_card_payments",
 		EMI_PURCHASES: "em_emi_purchases",
 		CARD_STATEMENTS: "em_card_statements",
-		CARD_STATEMENTS: "em_emi_history",
+		EMI_HISTORY: "em_emi_history",	
 		STATEMENT_HISTORY: "em_statement_history"
 
 
