@@ -438,7 +438,6 @@ function renderTable(data) {
             </td>
 
             <td>
-				<div class="action-buttons">
                 <button
                     class="btn btn-primary"
                     onclick="Transactions.editTransaction(${item.id})">
@@ -454,7 +453,7 @@ function renderTable(data) {
                     Delete
 
                 </button>
-				</div>
+				
 
             </td>
 
