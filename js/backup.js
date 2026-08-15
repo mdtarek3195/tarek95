@@ -196,9 +196,6 @@ function googleLogin(){
 			cardPayments:
 				Storage.getCardPayments(),
 
-			paidStatements:
-				Storage.getPaidStatements(),
-
 			statementHistory:
 				Storage.getStatementHistory(),
 
@@ -482,12 +479,7 @@ async function restoreFromDrive(fileId) {
 		)
 	);
 
-	localStorage.setItem(
-		"cc_paid_statements",
-		JSON.stringify(
-			data.paidStatements || []
-		)
-	);
+
 
 	localStorage.setItem(
 		"em_statement_history",
@@ -581,9 +573,6 @@ async function backupToDrive() {
 			
 		cardPayments:
 			Storage.getCardPayments(),
-
-		paidStatements:
-			Storage.getPaidStatements(),
 
 		statementHistory:
 			Storage.getStatementHistory(),
@@ -989,12 +978,6 @@ async function cleanupOldBackups(){
 					)
 				);
 
-				localStorage.setItem(
-					"cc_paid_statements",
-					JSON.stringify(
-						data.paidStatements || []
-					)
-				);
 
 				localStorage.setItem(
 					"em_statement_history",
