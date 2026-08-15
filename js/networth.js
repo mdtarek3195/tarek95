@@ -38,15 +38,16 @@ const NetWorth = (() => {
         const goals =
             Storage.getGoals();
 
-        const totalAssets =
-            accounts.reduce(
-                (sum, acc) =>
-                    sum +
-                    Number(
-                        acc.balance || 0
-                    ),
-                0
-            );
+		 const totalAssets =
+			accounts
+			.filter(
+				acc => acc.type !== "creditcard"
+			)
+			.reduce(
+				(sum, acc) =>
+					sum + Number(acc.balance || 0),
+				0
+			);
 
         const goalSavings =
             goals.reduce(
@@ -98,8 +99,11 @@ const NetWorth = (() => {
         if (!tbody)
             return;
 
-        const accounts =
-            Storage.getAccounts();
+		const accounts =
+			Storage.getAccounts()
+			.filter(
+				acc => acc.type !== "creditcard"
+			);
 
         if (
             accounts.length === 0
