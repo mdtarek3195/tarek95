@@ -550,7 +550,25 @@ Storage.saveTransactions(
 
 function loadStatementTable() {
 
+console.log(
+    "Status Filter:",
+    statusFilter
+);
 
+console.log(
+    "Year Filter:",
+    yearFilter
+);
+
+console.log(
+    "Filtered:",
+    statements
+);
+
+
+
+
+	
 const statusFilter =
 
     document.getElementById(
