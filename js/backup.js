@@ -1098,10 +1098,6 @@ async function cleanupOldBackups(){
 		);
 
 		localStorage.removeItem(
-			"cc_paid_statements"
-		);
-
-		localStorage.removeItem(
 			"em_statement_history"
 		);
 
