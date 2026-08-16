@@ -2621,7 +2621,9 @@ function renderDailyTrendChart() {
             break;
 
     }
-
+startDate.setHours(
+    0,0,0,0
+);
 	const totalDays =
     dailyTrendSelected === "7days"
     ? 7
