@@ -2599,7 +2599,7 @@ function renderDailyTrendChart() {
         case "7days":
 
             startDate.setDate(
-                today.getDate() - 6
+                today.getDate() - 8
             );
 
             break;
