@@ -2599,7 +2599,7 @@ function renderDailyTrendChart() {
         case "7days":
 
             startDate.setDate(
-                today.getDate() - 8
+                today.getDate() - 6
             );
 
             break;
@@ -2621,6 +2621,31 @@ function renderDailyTrendChart() {
             break;
 
     }
+
+	const totalDays =
+    dailyTrendSelected === "7days"
+    ? 7
+    : dailyTrendSelected === "15days"
+    ? 15
+    : 30;
+
+for(let i = 0; i < totalDays; i++){
+
+    const d =
+        new Date(startDate);
+
+    d.setDate(
+        startDate.getDate() + i
+    );
+
+    const key =
+        d.toISOString()
+        .split("T")[0];
+
+    dailyTotals[key] = 0;
+
+}
+	
 
     transactions.forEach(item => {
 
