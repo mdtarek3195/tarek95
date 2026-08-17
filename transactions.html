@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Manager For Tarek</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+	<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+            <h2> <a href="index.html">Expense Manager</a></h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+
+                <li>
+                    <a href="index.html">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="transactions.html" class="active">
+                        💰 Transactions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="accounts.html">
+                        🏦 Accounts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="creditcard.html">
+                        💳 Credit Card
+                    </a>
+                </li>
+				
+				<li>
+					<a href="loan.html">
+						💵 Loans
+					</a>
+				</li>
+
+                <li>
+                    <a href="categories.html">
+                        📂 Categories
+                    </a>
+                </li>
+
+                <li>
+                    <a href="budget.html">
+                        🎯 Budget
+                    </a>
+                </li>
+
+                <li>
+                    <a href="goals.html">
+                        🚀 Goals
+                    </a>
+                </li>
+
+                <li>
+                    <a href="charts.html">
+                        💹 Charts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="reports.html">
+                        📈 Reports
+                    </a>
+                </li>
+				<li>
+
+				<a href="transfer.html">
+
+					🔄 Account Transfer
+
+				</a>
+
+				</li>
+				<li>
+				<a href="statement.html">
+					📄 Account Statement
+				</a>
+				</li>
+
+				<li>
+
+					<a href="networth.html">
+
+						💎 Net Worth
+
+					</a>
+
+				</li>
+
+                <li>
+                    <a href="recurring.html">
+                        🔁 Recurring
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        ⚙ Settings
+                    </a>
+                </li>
+				<li>
+                    <a href="backup.html">
+                        💾 Backup & Restore
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Header -->
+        <header class="header">
+
+            <div class="header-left">
+
+                <button class="menu-toggle" id="menuToggle">
+                    ☰
+                </button>
+
+                <div class="header-title">
+				   Transaction Management
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- Content -->
+        <section class="content">
+
+            <!-- Add Transaction -->
+
+            <div class="card mb-20">
+
+                <h3 class="mb-20">
+                    Add New Transaction
+                </h3>
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Transaction Type
+                    </label>
+
+                    <select
+                        class="form-control"
+                        id="transactionType">
+
+                        <option value="expense">
+                            Expense
+                        </option>
+						
+						<option value="income">
+                            Income
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Date
+                    </label>
+
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="transactionDate">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Category
+                    </label>
+
+                    <select
+                        class="form-control"
+                        id="transactionCategory">
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Account
+                    </label>
+
+                    <select
+                        class="form-control"
+                        id="transactionAccount">
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="transactionAmount"
+                        placeholder="Enter amount">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Note
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        id="transactionNote"></textarea>
+
+                </div>
+
+                <button
+                    class="btn btn-primary"
+                    id="saveTransactionBtn">
+
+                    Save Transaction
+
+                </button>
+
+            </div>
+
+            <!-- Filters -->
+
+            <div class="card mb-20">
+
+                <h3 class="mb-20">
+                    Search & Filter
+                </h3>
+
+                <div class="form-group">
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="searchInput"
+                        placeholder="Search...">
+
+                </div>
+
+                <div class="form-group">
+
+                    <select
+                        class="form-control"
+                        id="filterType">
+
+                        <option value="all">
+                            All Transactions
+                        </option>
+
+                        <option value="income">
+                            Income
+                        </option>
+
+                        <option value="expense">
+                            Expense
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- Transaction Table -->
+
+            <div class="card">
+
+
+				<div class="table-header">
+
+						<h3>Transaction List</h3>
+
+						<div class="table-filter">
+
+							<div class="filter-group">
+								<label>From
+								<input type="date" id="fromDate"></label>
+							</div>
+
+							<div class="filter-group">
+								<label>To
+								<input type="date" id="toDate"></label>
+							</div>
+
+						</div>
+
+					</div>	
+
+                <div class="table-container">
+					<div class="transaction-table-scroll">
+                    <table class="table">
+
+                        <thead>
+
+						<tr>
+							<th>Date</th>
+							<th>Type</th>
+							<th>Category</th>
+							<th>Account</th>
+							<th>Amount</th>
+							<th>Note</th>
+							<th style="text-align:center;">Action</th>
+						</tr>
+
+                        </thead>
+
+                        <tbody id="transactionTableBody">
+
+                            <tr>
+
+                                <td colspan="7"
+                                    class="text-center">
+
+                                    No transactions found
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+					</div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- Overlay -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay">
+</div>
+
+<!-- Scripts -->
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/transactions.js"></script>
+
+<script>
+
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    menuToggle?.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('show');
+    });
+
+    sidebarOverlay?.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+    });
+	
+
+</script>
+
+</body>
+</html>

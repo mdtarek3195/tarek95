@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup & Restore - Expense Manager</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+	<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+            <h2> <a href="index.html">Expense Manager</a></h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+
+                <li>
+                    <a href="index.html">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="transactions.html">
+                        💰 Transactions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="accounts.html">
+                        🏦 Accounts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="creditcard.html">
+                        💳 Credit Card
+                    </a>
+                </li>
+				
+				<li>
+					<a href="loan.html">
+						💵 Loans
+					</a>
+				</li>
+
+                <li>
+                    <a href="categories.html">
+                        📂 Categories
+                    </a>
+                </li>
+
+                <li>
+                    <a href="budget.html">
+                        🎯 Budget
+                    </a>
+                </li>
+
+                <li>
+                    <a href="goals.html">
+                        🚀 Goals
+                    </a>
+                </li>
+
+                <li>
+                    <a href="charts.html">
+                        💹 Charts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="reports.html">
+                        📈 Reports
+                    </a>
+                </li>
+				<li>
+
+				<a href="transfer.html">
+
+					🔄 Account Transfer
+
+				</a>
+
+				</li>
+				<li>
+				<a href="statement.html">
+					📄 Account Statement
+				</a>
+				</li>
+
+				<li>
+
+					<a href="networth.html">
+
+						💎 Net Worth
+
+					</a>
+
+				</li>
+
+                <li>
+                    <a href="recurring.html">
+                        🔁 Recurring
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        ⚙ Settings
+                    </a>
+                </li>
+				<li>
+                    <a href="backup.html" class="active">
+                        💾 Backup & Restore
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- Main -->
+
+    <main class="main">
+
+        <header class="header">
+
+            <div class="header-left">
+
+                <button
+                    class="menu-toggle"
+                    id="menuToggle">
+
+                    ☰
+
+                </button>
+
+                <div class="header-title">
+                    Backup & Restore
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="content">
+
+            <!-- Statistics -->
+
+            <div class="kpi-grid section">
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Transactions
+                    </div>
+
+                    <div
+                        class="card-value"
+                        id="backupTransactions">
+
+                        0
+
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Accounts
+                    </div>
+
+                    <div
+                        class="card-value"
+                        id="backupAccounts">
+
+                        0
+
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Categories
+                    </div>
+
+                    <div
+                        class="card-value"
+                        id="backupCategories">
+
+                        0
+
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Budgets
+                    </div>
+
+                    <div
+                        class="card-value"
+                        id="backupBudgets">
+
+                        0
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+			<!-- Backup & Restore From Google -->
+
+			<div class="card section">
+			
+			    <h3 class="mb-20">
+			        Google Drive Backup
+			    </h3>
+			<div style=" display:flex; gap:8px; align-items:center; ">
+			    <button
+			        class="btn btn-primary"
+			        id="googleLoginBtn">
+			
+			        Connect Google Drive
+			
+			    </button>
+			
+			    <button
+			        class="btn btn-success"
+			        id="backupDriveBtn">
+			
+			        Backup To Drive
+			
+			    </button>
+			</div>
+			</div>
+			
+			<!-- Auto Backup Settings -->
+			
+			<div class="card section">
+			
+			    <h3 class="mb-20">
+			        Auto Backup Settings
+			    </h3>
+			
+			    <div class="form-group">
+			
+			        <label
+			            style="
+			                display:flex;
+			                align-items:center;
+			                gap:10px;
+			                cursor:pointer;
+			            ">
+			
+			            <input
+			                type="checkbox"
+			                id="autoBackupEnabled">
+			
+			            Enable Daily Auto Backup
+			
+			        </label>
+			
+			    </div>
+			
+			    <p
+			        style="
+			            margin-top:10px;
+			            color:#6b7280;
+			        ">
+			
+			        When enabled, a backup will automatically be created
+			        once per day whenever you open the application.
+			
+			        Only the latest 30 backups will be kept.
+			
+			    </p>
+			
+			</div>
+
+			<div class="card section">
+			
+			    <h3 class="mb-20">
+			        Google Drive Backups
+			    </h3>
+			
+			    <div class="table-container">
+				 <div class="drive-backup-list">
+			        <table class="table">
+			
+			            <thead>
+			
+			                <tr>
+			
+			                    <th>File Name</th>
+			
+			                    <th>Date</th>
+			
+			                    <th>Size</th>
+			
+			                    <th>Action</th>
+			
+			                </tr>
+			
+			            </thead>
+			
+			            <tbody id="driveBackupBody">
+			
+			            </tbody>
+			
+			        </table>
+				  </div>
+			    </div>
+			
+			</div>
+
+		
+            <!-- Export -->
+
+            <div class="card section">
+
+                <h3 class="mb-20">
+                    Export Backup
+                </h3>
+
+                <p class="mb-20">
+                    Download all Expense Manager data as a JSON backup file.
+                </p>
+
+                <button
+                    class="btn btn-primary"
+                    id="exportBackupBtn">
+
+                    Download Backup
+
+                </button>
+
+            </div>
+
+            <!-- Import -->
+
+            <div class="card section">
+
+                <h3 class="mb-20">
+                    Restore Backup
+                </h3>
+
+                <p class="mb-20">
+                    Select a previously exported backup file.
+                </p>
+
+                <input
+                    type="file"
+                    id="backupFile"
+                    accept=".json"
+                    class="form-control">
+
+                <br>
+
+                <button
+                    class="btn btn-success"
+                    id="importBackupBtn">
+
+                    Restore Backup
+
+                </button>
+
+            </div>
+
+            <!-- Reset -->
+
+            <div class="card">
+
+                <h3 class="mb-20">
+                    Danger Zone
+                </h3>
+
+                <p class="mb-20">
+                    This action will permanently delete all application data.
+                </p>
+
+                <button
+                    class="btn btn-danger"
+                    id="resetDataBtn">
+
+                    Reset All Data
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- Overlay -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay">
+</div>
+
+<!-- Scripts -->
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/backup.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
+<script src="https://apis.google.com/js/api.js"></script>
+<script>
+
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    menuToggle?.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('show');
+    });
+
+    sidebarOverlay?.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+    });
+	
+
+</script>
+
+</body>
+</html>
