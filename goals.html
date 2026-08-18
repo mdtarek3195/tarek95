@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goals - Expense Manager</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+	<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+            <h2> <a href="index.html">Expense Manager</a></h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+
+                <li>
+                    <a href="index.html">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="transactions.html">
+                        💰 Transactions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="accounts.html">
+                        🏦 Accounts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="creditcard.html">
+                        💳 Credit Card
+                    </
+				
+				<li>
+					<a href="loan.html">
+						💵 Loans
+					</a>
+				</li>
+
+                <li>
+                    <a href="categories.html">
+                        📂 Categories
+                    </a>
+                </li>
+
+                <li>
+                    <a href="budget.html">
+                        🎯 Budget
+                    </a>
+                </li>
+
+                <li>
+                    <a href="goals.html" class="active">
+                        🚀 Goals
+                    </a>
+                </li>
+
+                <li>
+                    <a href="charts.html">
+                        💹 Charts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="reports.html">
+                        📈 Reports
+                    </a>
+                </li>
+				<li>
+
+				<a href="transfer.html">
+
+					🔄 Account Transfer
+
+				</a>
+
+				</li>
+				<li>
+				<a href="statement.html">
+					📄 Account Statement
+				</a>
+				</li>
+
+				<li>
+
+					<a href="networth.html">
+
+						💎 Net Worth
+
+					</a>
+
+				</li>
+
+                <li>
+                    <a href="recurring.html">
+                        🔁 Recurring
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        ⚙ Settings
+                    </a>
+                </li>
+				<li>
+                    <a href="backup.html">
+                        💾 Backup & Restore
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+
+        <header class="header">
+
+            <div class="header-left">
+
+                <button
+                    class="menu-toggle"
+                    id="menuToggle">
+                    ☰
+                </button>
+
+                <div class="header-title">
+                    Savings Goals
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="content">
+
+            <!-- KPI -->
+
+            <div class="kpi-grid section">
+
+                <div class="card">
+                    <div class="card-title">
+                        Total Goals
+                    </div>
+                    <div class="card-value"
+                         id="totalGoals">
+                        0
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        Target Amount
+                    </div>
+                    <div class="card-value"
+                         id="totalTarget">
+                        $0
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        Saved Amount
+                    </div>
+                    <div class="card-value"
+                         id="totalSaved">
+                        $0
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        Completed
+                    </div>
+                    <div class="card-value"
+                         id="completedGoals">
+                        0
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Add Goal -->
+
+            <div class="card">
+
+                <h3 class="mb-20">
+                    Create Goal
+                </h3>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Goal Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="goalName"
+                            class="form-control"
+                            placeholder="Emergency Fund">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Target Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="goalTarget"
+                            class="form-control"
+                            placeholder="100000">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Current Saved
+                        </label>
+
+                        <input
+                            type="number"
+                            id="goalSaved"
+                            class="form-control"
+                            placeholder="20000">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Target Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="goalDate"
+                            class="form-control">
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn btn-primary"
+                    id="saveGoalBtn">
+
+                    Save Goal
+
+                </button>
+
+            </div>
+			
+			<div id="contributionModal" class="modal">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h3>Add Contribution</h3>
+
+					<span
+						id="closeContributionModal"
+						class="modal-close">
+
+						&times;
+
+					</span>
+
+				</div>
+
+				<div class="form-group">
+
+					<label>Amount</label>
+
+					<input
+						type="number"
+						id="contributionAmount"
+						class="form-control">
+
+				</div>
+
+				<div class="form-group">
+
+					<label>Account</label>
+
+					<select
+						id="contributionAccount"
+						class="form-control">
+					</select>
+
+				</div>
+
+				<button
+					id="saveContributionBtn"
+					class="btn btn-primary">
+
+					Save Contribution
+
+				</button>
+
+			</div>
+
+		</div>
+			
+
+            <!-- Goals Table -->
+
+            <div class="card mt-20">
+
+                <h3>
+                    Goal Tracker
+                </h3>
+
+                <div class="table-container">
+
+                    <table class="table">
+
+                        <thead>
+
+                        <tr>
+                            <th>Goal</th>
+                            <th>Target</th>
+                            <th>Saved</th>
+                            <th>Remaining</th>
+                            <th>Progress</th>
+                            <th>Target Date</th>
+                            <th>Status</th>
+							<th>Contribution</th>
+                            <th style="text-align: center">Action</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody id="goalTableBody">
+
+                            <tr>
+                                <td colspan="8"
+                                    class="text-center">
+
+                                    No Goals Found
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay">
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/goals.js"></script>
+
+<script>
+
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    menuToggle?.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('show');
+    });
+
+    sidebarOverlay?.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+    });
+	
+
+</script>
+
+<!-- Goal History Modal -->
+
+<div
+    id="goalHistoryModal"
+    class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h3 id="historyGoalTitle">
+                Goal History
+            </h3>
+
+            <span
+                class="modal-close"
+                id="closeHistoryModal">
+
+                &times;
+
+            </span>
+
+        </div>
+
+        <div
+            id="historyContent">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+</body>
+</html>

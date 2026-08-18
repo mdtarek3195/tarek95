@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts - Expense Manager</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+	<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+            <h2> <a href="index.html">Expense Manager</a></h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+
+                <li>
+                    <a href="index.html">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="transactions.html">
+                        💰 Transactions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="accounts.html">
+                        🏦 Accounts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="creditcard.html">
+                        💳 Credit Card
+                    </a>
+                </li>
+				<li>
+				<a href="emi-history.html">
+					📅 EMI History
+				</a>
+				</li>
+				
+				<li>
+				<a href="statement-history.html">
+					📜 Statement History
+				</a>
+				</li>
+				<li>
+				<a href="payment-history.html">
+					✅ Payment History
+				</a>
+				</li>
+				<li>
+				<a href="credit-report.html" class="active">
+					📋 Credit Card Report
+				</a>
+				</li>
+								
+				<li>
+					<a href="loan.html">
+						💵 Loans
+					</a>
+				</li>
+
+                <li>
+                    <a href="categories.html">
+                        📂 Categories
+                    </a>
+                </li>
+
+                <li>
+                    <a href="budget.html">
+                        🎯 Budget
+                    </a>
+                </li>
+
+                <li>
+                    <a href="goals.html">
+                        🚀 Goals
+                    </a>
+                </li>
+
+                <li>
+                    <a href="charts.html">
+                        💹 Charts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="reports.html">
+                        📈 Reports
+                    </a>
+                </li>
+				<li>
+
+				<a href="transfer.html">
+
+					🔄 Account Transfer
+
+				</a>
+
+				</li>
+				<li>
+				<a href="statement.html">
+					📄 Account Statement
+				</a>
+				</li>
+
+				<li>
+
+					<a href="networth.html">
+
+						💎 Net Worth
+
+					</a>
+
+				</li>
+
+                <li>
+                    <a href="recurring.html">
+                        🔁 Recurring
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        ⚙ Settings
+                    </a>
+                </li>
+				<li>
+                    <a href="backup.html">
+                        💾 Backup & Restore
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+    <!-- Main Content -->
+    <main class="main">
+
+        <header class="header">
+
+            <div class="header-left">
+
+                <button class="menu-toggle" id="menuToggle">
+                    ☰
+                </button>
+
+                <div class="header-title">
+                       Credit Card Report
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="content">
+			<!-- FILTER -->
+
+			<div class="card mb-20">
+				<div class="form-row mb-20">
+					
+						<div class="form-group">
+							<label class="form-label">Select Card</label>
+							
+							<select
+								id="reportCard"
+								class="form-control"
+								>
+
+								<option value="">
+									All Cards
+								</option>
+
+							</select>
+						</div>
+						
+						<div class="form-group">
+							<label class="form-label">Select Month</label>
+							
+							<input
+							type="month"
+							id="reportMonth"
+							class="form-control"
+							>
+						</div>
+						
+					<div class="form-group">
+
+						<label class="form-label">
+							From Date
+						</label>
+
+						<input
+							type="date"
+							id="reportFromDate"
+							class="form-control"
+						>
+
+					</div>
+
+					<div class="form-group">
+
+						<label class="form-label">
+							To Date
+						</label>
+
+						<input
+							type="date"
+							id="reportToDate"
+							class="form-control"
+						>
+
+					</div>						
+
+				</div>
+											
+				<div class="filter-actions">
+
+					<button
+						class="btn btn-primary w-100"
+						onclick="generateCreditReport()"
+					>
+						Generate Report
+					</button>
+
+				</div>
+
+				
+			</div>
+
+			<!-- SUMMARY -->
+
+            <div class="kpi-grid section">
+				<div class="card">
+					<div class="card-title"> Purchase</div>
+					<div class="card-value" id="reportPurchase">৳ 0</div>
+				</div>
+				
+				<div class="card">
+					<div class="card-title">EMI</div>
+					<div class="card-value" id="reportEMI">৳ 0</div>
+				</div>
+				
+				<div class="card">
+					<div class="card-title">Payment</div>
+					<div class="card-value" id="reportPayment">৳ 0</div>
+				</div>
+				
+				<div class="card">
+					<div class="card-title">Outstanding</div>
+					<div class="card-value" id="reportOutstanding">৳ 0</div>
+				</div>
+			</div>	
+
+
+
+			<!-- CHART -->
+
+
+			<div class="card mb-20">
+				
+                <h3 class="mb-10">
+					Purchase vs Payment vs EMI
+				</h3>
+				<div style="height:400px;">
+                    <canvas id="creditReportChart"></canvas>
+				</div>	
+			</div>	
+
+			<div class="card">
+				
+                <h3 class="mb-10">
+					Outstanding Trend
+				</h3>
+				<div style="height:400px;">
+                    <canvas id="outstandingTrendChart"></canvas>
+				</div>	
+			</div>	
+
+            
+        </section>
+
+    </main>
+
+</div>
+
+<!-- Overlay -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay">
+</div>
+
+<!-- Scripts -->
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/credit-report.js"></script>
+
+<script>
+
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    menuToggle?.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('show');
+    });
+
+    sidebarOverlay?.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+    });
+	
+
+</script>
+
+</body>
+</html>

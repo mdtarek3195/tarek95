@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Manager Pro</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+	<link rel="stylesheet" href="css/responsive.css">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="app">
+
+   <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+            <h2> <a href="index.html">Expense Manager</a></h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+
+                <li>
+                    <a href="index.html">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="transactions.html">
+                        💰 Transactions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="accounts.html">
+                        🏦 Accounts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="creditcard.html">
+                        💳 Credit Card
+                    </
+				
+				<li>
+					<a href="loan.html">
+						💵 Loans
+					</a>
+				</li>
+
+                <li>
+                    <a href="categories.html">
+                        📂 Categories
+                    </a>
+                </li>
+
+                <li>
+                    <a href="budget.html">
+                        🎯 Budget
+                    </a>
+                </li>
+
+                <li>
+                    <a href="goals.html">
+                        🚀 Goals
+                    </a>
+                </li>
+
+                <li>
+                    <a href="charts.html">
+                        💹 Charts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="reports.html">
+                        📈 Reports
+                    </a>
+                </li>
+				<li>
+
+				<a href="transfer.html">
+
+					🔄 Account Transfer
+
+				</a>
+
+				</li>
+				<li>
+				<a href="statement.html" class="active">
+					📄 Account Statement
+				</a>
+				</li>
+
+				<li>
+
+					<a href="networth.html">
+
+						💎 Net Worth
+
+					</a>
+
+				</li>
+
+                <li>
+                    <a href="recurring.html">
+                        🔁 Recurring
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        ⚙ Settings
+                    </a>
+                </li>
+				<li>
+                    <a href="backup.html">
+                        💾 Backup & Restore
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Header -->
+        <header class="header">
+
+            <div class="header-left">
+
+                <button class="menu-toggle" id="menuToggle">
+                    ☰
+                </button>
+
+                <div class="header-title">
+                    Account Statement
+                </div>
+
+            </div>
+
+
+
+        </header>
+
+        <!-- Content -->
+        <section class="content">
+
+        <!-- Filter Card -->
+
+        <div class="card mb-20" id="statementFilterCard">
+
+                <h3>
+                    Statement Filter
+                </h3>
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Account
+                        </label>
+
+                        <select
+                            id="statementAccount"
+                            class="form-control">
+
+                            <option value="">
+                                Select Account
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            From Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="statementFromDate"
+                            class="form-control">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            To Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="statementToDate"
+                            class="form-control">
+
+                    </div>
+
+
+                <div
+                    style="
+                        margin-top:15px;
+                    ">
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="
+                            Statement.generateStatement()
+                        ">
+
+                        Generate Statement
+
+                    </button>
+
+                    <button
+                        class="btn btn-success"
+                        onclick="
+                            Statement.exportCSV()
+                        ">
+
+                        Export CSV
+
+                    </button>
+					
+					<button
+						class="btn btn-primary"
+						onclick="
+							Statement.printStatement()
+						">
+
+						Print
+
+					</button>
+
+                </div>
+
+        </div>
+
+        <!-- Summary Card -->
+
+        <div class="card mb-20">
+
+            <div class="card-header">
+
+                <h3>
+                    Statement Summary
+                </h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <h4>
+                            Total Credit
+                        </h4>
+
+                        <p
+                            id="statementCredit">
+
+                            ৳ 0
+
+                        </p>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <h4>
+                            Total Debit
+                        </h4>
+
+                        <p
+                            id="statementDebit">
+
+                            ৳ 0
+
+                        </p>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <h4>
+                            Closing Balance
+                        </h4>
+
+                        <p
+                            id="statementBalance">
+
+                            ৳ 0
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Statement Table -->
+
+        <div class="card mb-20">
+
+			<h3>
+				Account Ledger
+			</h3>
+
+			<div class="table-container">
+
+				<table class="table">
+
+					<thead>
+
+						<tr>
+
+							<th>
+								Date
+							</th>
+
+							<th>
+								Description
+							</th>
+
+							<th>
+								Debit
+							</th>
+
+							<th>
+								Credit
+							</th>
+
+							<th>
+								Balance
+							</th>
+
+						</tr>
+
+					</thead>
+
+					<tbody
+						id="statementTableBody">
+
+						<tr>
+
+							<td
+								colspan="5"
+								class="text-center">
+
+								Please Generate
+								statement to
+								view data
+
+							</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+
+			</div>
+
+		</div>
+
+      </section>
+
+    </main>
+
+
+ </div>
+
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Scripts -->
+
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/statement.js"></script>
+
+
+<script>
+     const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    menuToggle?.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('show');
+    });
+
+    sidebarOverlay?.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+    });
+	
+</script>
+
+
+</body>
+</html>
