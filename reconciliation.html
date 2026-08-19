@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts - Expense Manager</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+	<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+            <h2> <a href="index.html">Expense Manager</a></h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+
+                <li>
+                    <a href="index.html">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="transactions.html">
+                        💰 Transactions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="accounts.html">
+                        🏦 Accounts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="creditcard.html">
+                        💳 Credit Card
+                    </a>
+                </li>
+				<li>
+				<a href="emi-history.html">
+					📅 Archived EMI
+				</a>
+				</li>
+				
+				<li>
+				<a href="statement-history.html">
+					📜 Archived Statements
+				</a>
+				</li>
+				<li>
+				<a href="payment-history.html">
+					✅ Payment History
+				</a>
+				</li>
+				<li>
+				<a href="credit-report.html">
+					📋 Credit Card Report
+				</a>
+				</li>
+								
+				<li>
+					<a href="loan.html">
+						💵 Loans
+					</a>
+				</li>
+
+                <li>
+                    <a href="categories.html">
+                        📂 Categories
+                    </a>
+                </li>
+
+                <li>
+                    <a href="budget.html">
+                        🎯 Budget
+                    </a>
+                </li>
+
+                <li>
+                    <a href="goals.html">
+                        🚀 Goals
+                    </a>
+                </li>
+
+                <li>
+                    <a href="charts.html">
+                        💹 Charts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="reports.html">
+                        📈 Reports
+                    </a>
+                </li>
+
+                <li>
+                    <a href="reconciliation.html" class="active">
+						⚖️ Reconciliation
+                    </a>
+                </li>
+				<li>
+
+				<a href="transfer.html">
+
+					🔄 Account Transfer
+
+				</a>
+
+				</li>
+				<li>
+				<a href="statement.html">
+					📄 Account Statement
+				</a>
+				</li>
+
+				<li>
+
+					<a href="networth.html">
+
+						💎 Net Worth
+
+					</a>
+
+				</li>
+
+                <li>
+                    <a href="recurring.html">
+                        🔁 Recurring
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        ⚙ Settings
+                    </a>
+                </li>
+				<li>
+                    <a href="backup.html">
+                        💾 Backup & Restore
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+    <!-- Main Content -->
+    <main class="main">
+
+        <header class="header">
+
+            <div class="header-left">
+
+                <button class="menu-toggle" id="menuToggle">
+                    ☰
+                </button>
+
+                <div class="header-title">
+                   Account Reconciliation
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="content">
+		
+		
+
+<div class="card">
+
+    <h3>
+        Account Reconciliation
+    </h3>
+
+    <div class="form-group">
+
+        <label>
+            Select Account
+        </label>
+
+        <select
+            id="reconAccount"
+            class="form-control">
+
+        </select>
+
+    </div>
+
+    <div class="form-group">
+
+        <label>
+            App Balance
+        </label>
+
+        <input
+            type="text"
+            id="appBalance"
+            class="form-control"
+            readonly>
+
+    </div>
+
+    <div class="form-group">
+
+        <label>
+            Actual Balance
+        </label>
+
+        <input
+            type="number"
+            id="actualBalance"
+            class="form-control">
+
+    </div>
+
+    <div class="form-group">
+
+        <label>
+            Difference
+        </label>
+
+        <input
+            type="text"
+            id="difference"
+            class="form-control"
+            readonly>
+
+    </div>
+
+    <button
+        class="btn btn-primary"
+        onclick="calculateDifference()">
+
+        Check
+
+    </button>
+
+    <button
+        class="btn btn-success"
+        onclick="adjustBalance()">
+
+        Adjust Balance
+
+    </button>
+
+</div>
+
+
+
+<div class="card mt-20">
+
+    <h3>
+        Reconciliation History
+    </h3>
+
+	
+    <div class="table-container">
+				<select
+					id="reconHistoryAccount"
+					class="form-control">
+					<option value="all">
+						All Accounts
+					</option>
+			</select>
+		<div class="Reconciliation-table">
+		
+			<table class="table">
+
+				<thead>
+
+					<tr>
+
+						<th>Date</th>                    
+						
+						<th>Date</th>
+
+						<th>App Balance</th>
+						
+						<th>Actual Balance</th>
+
+						<th>Ajustment</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody
+					id="reconHistoryBody">
+
+				</tbody>
+
+			</table>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+            
+        </section>
+
+    </main>
+
+</div>
+
+<!-- Overlay -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay">
+</div>
+
+<!-- Scripts -->
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/reconciliation.js"></script>
+
+<script>
+
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    menuToggle?.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('show');
+    });
+
+    sidebarOverlay?.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+    });
+	
+
+</script>
+
+</body>
+</html>
