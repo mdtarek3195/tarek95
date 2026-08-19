@@ -2307,7 +2307,8 @@ function loadDueReminder() {
 
 
 
-function payStatement(id) {
+
+    function payStatement(id) {
 
     const statements =
         Storage.getCardStatements();
@@ -2320,126 +2321,60 @@ function payStatement(id) {
     if (!statement) return;
 
     const fromAccount =
-
         document.getElementById(
             "statementPaymentAccount"
         )?.value;
 
     const payment = Number(
-
         document.getElementById(
             "statementPaymentAmount"
         )?.value
-
     );
 
     if (
-
         !fromAccount ||
-
         isNaN(payment) ||
-
         payment <= 0
-
     ) {
-
-        alert(
-            "Enter valid payment amount"
-        );
-
+        alert("Enter valid payment amount");
         return;
-
     }
 
-    if (
+    const remainingBefore =
+        Number(statement.remaining || 0);
 
-        payment >
-
-        Number(
-            statement.remaining || 0
-        )
-
-    ) {
-
-        alert(
-            "Payment exceeds outstanding amount"
-        );
-
+    if (payment > remainingBefore) {
+        alert("Payment exceeds outstanding amount");
         return;
-
     }
+
 
     /* =====================
        Deduct Bank Balance
     ===================== */
 
     Storage.updateAccountBalance(
-
         fromAccount,
-
         payment,
-
         "expense"
-
     );
 
 
-		const paymentId = Date.now();
+    /* =====================
+       Payment ID
+    ===================== */
 
-		Storage.addTransaction({
+    const paymentId = Date.now();
 
-			type: "credit_card_payment",
 
-			date:
-				new Date()
-				.toISOString()
-				.split("T")[0],
-
-			category:
-				"Credit Card Payment",
-
-			account:
-				fromAccount,
-
-			amount:
-				payment,
-
-			note:
-				`${statement.card} Statement Payment (${statement.month})`,
-
-			paymentId:
-				paymentId,
-
-			statementId:
-				statement.id
-
-		});
-
-/* =====================
-   EMI EXPENSE
-   ===================== */
-
-const emiExpense =
-
-    (statement.emiDetails || [])
-    .reduce(
-
-        (sum, emi) =>
-
-            sum +
-            Number(
-                emi.amount || 0
-            ),
-
-        0
-
-    );
-
-if (emiExpense > 0) {
+    /* =====================
+       Credit Card Payment
+       NOT an Expense
+    ===================== */
 
     Storage.addTransaction({
 
-        type: "expense",
+        type: "credit_card_payment",
 
         date:
             new Date()
@@ -2447,114 +2382,199 @@ if (emiExpense > 0) {
             .split("T")[0],
 
         category:
-            "Credit Card EMI",
+            "Credit Card Payment",
 
         account:
             fromAccount,
 
         amount:
-            Number(
-                emiExpense.toFixed(2)
-            ),
+            payment,
 
         note:
-            `${statement.card} EMI Payment (${statement.month})`,
+            `${statement.card} Statement Payment (${statement.month})`,
 
         paymentId:
             paymentId,
 
         statementId:
-            statement.id,
-
-        isCreditCardEMI:
-            true
-
+            statement.id
     });
 
-}
+
+    /* =====================
+       EMI Expense Allocation
+    ===================== */
+
+    const totalEMI =
+        (statement.emiDetails || [])
+        .reduce(
+            (sum, emi) =>
+                sum + Number(emi.amount || 0),
+            0
+        );
 
 
+    /*
+       EMI already recorded for
+       previous partial payments
+    */
 
-	/* =====================
+    const previousEMIPaid =
+        Number(
+            statement.emiPaid || 0
+        );
+
+
+    /*
+       Calculate how much of
+       this payment can be allocated
+       to EMI.
+    */
+
+    const emiRemaining =
+        Math.max(
+            0,
+            totalEMI - previousEMIPaid
+        );
+
+
+    /*
+       Payment first covers EMI
+       portion, up to remaining EMI.
+    */
+
+    const currentEMIExpense =
+        Math.min(
+            payment,
+            emiRemaining
+        );
+
+
+    if (currentEMIExpense > 0) {
+
+        Storage.addTransaction({
+
+            type: "expense",
+
+            date:
+                new Date()
+                .toISOString()
+                .split("T")[0],
+
+            category:
+                "Credit Card EMI",
+
+            account:
+                fromAccount,
+
+            amount:
+                Number(
+                    currentEMIExpense.toFixed(2)
+                ),
+
+            note:
+                `${statement.card} EMI Payment (${statement.month})`,
+
+            paymentId:
+                paymentId,
+
+            statementId:
+                statement.id,
+
+            isCreditCardEMI:
+                true
+        });
+
+
+        /*
+           Save how much EMI has
+           already been recorded.
+        */
+
+        statement.emiPaid =
+            Number(
+                (
+                    previousEMIPaid +
+                    currentEMIExpense
+                ).toFixed(2)
+            );
+    }
+
+
+    /* =====================
        Update Statement
     ===================== */
 
     statement.paymentAccount =
         fromAccount;
 
-    statement.paid = Number(
+    statement.paid =
+        Number(
+            (
+                Number(statement.paid || 0) +
+                payment
+            ).toFixed(2)
+        );
 
-        (
-            Number(
-                statement.paid || 0
-            ) +
+    statement.remaining =
+        Number(
+            (
+                Number(statement.amount || 0) -
+                statement.paid
+            ).toFixed(2)
+        );
 
-            payment
 
-        ).toFixed(2)
-
-    );
-
-    statement.remaining = Number(
-
-        (
-            Number(
-                statement.amount || 0
-            ) -
-
-            statement.paid
-
-        ).toFixed(2)
-
-    );
-
-    if (
-
-        statement.remaining <= 0
-
-    ) {
+    if (statement.remaining <= 0) {
 
         statement.remaining = 0;
 
-        statement.status =
-            "Paid";
+        statement.status = "Paid";
 
+    } else {
+
+        statement.status = "Partial";
     }
 
-    else {
-
-        statement.status =
-            "Partial";
-
-    }
 
     Storage.saveCardStatements(
         statements
     );
-	
-	
-Storage.addCardPayment({
 
-    id: paymentId,
 
-    card: statement.card,
+    /* =====================
+       Card Payment History
+    ===================== */
 
-    statementMonth: statement.month,
+    Storage.addCardPayment({
 
-    amount: payment,
+        id:
+            paymentId,
 
-    account: fromAccount,
+        card:
+            statement.card,
 
-    paymentDate: new Date()
-        .toISOString()
-        .split("T")[0],
+        statementMonth:
+            statement.month,
 
-    statementId: statement.id,
+        amount:
+            payment,
 
-    emiItems: statement.emiDetails || []
+        account:
+            fromAccount,
 
-});
-	
+        paymentDate:
+            new Date()
+            .toISOString()
+            .split("T")[0],
+
+        statementId:
+            statement.id,
+
+        emiItems:
+            statement.emiDetails || []
+    });
+
 
     /* =====================
        Refresh UI
@@ -2565,15 +2585,18 @@ Storage.addCardPayment({
     renderCards();
 
     loadStatementTable();
+
+
     App.showToast(
         "Payment Added Successfully"
     );
+
     viewStatement(id);
-
-
-
 }
+				
 
+
+	
 window.payStatement =
     payStatement;
 
