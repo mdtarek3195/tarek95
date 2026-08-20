@@ -1000,117 +1000,231 @@ function generateCreditReport() {
     // STATEMENT HEADER
     // ==========================================
 
-    const selectedStatement =
-        statements.length > 0
-            ? statements[statements.length - 1]
-            : null;
+   
+                
+/* ==========================================
+   CREDIT REPORT HEADER
+========================================== */
+
+const headerCard =
+    document.getElementById("printReportCard");
+
+const headerMonth =
+    document.getElementById("printStatementMonth");
+
+const headerAmount =
+    document.getElementById("printStatementAmount");
+
+const headerStatementDate =
+    document.getElementById("printStatementDate");
+
+const headerDueDate =
+    document.getElementById("printDueDate");
+
+const headerStatus =
+    document.getElementById("printStatementStatus");
 
 
-    if (selectedStatement) {
+/* ------------------------------------------
+   Card Name
+------------------------------------------ */
 
-        const reportCardEl =
-            document.getElementById(
-                "printReportCard"
-            );
+if (card) {
 
-        if (reportCardEl) {
+    headerCard.textContent = card;
 
-            reportCardEl.textContent =
-                selectedStatement.card ||
-                card ||
-                "Credit Card";
+} else {
 
-        }
+    headerCard.textContent =
+        "All Credit Cards";
+}
 
 
-        const statementMonthEl =
-            document.getElementById(
-                "printStatementMonth"
-            );
+/* ------------------------------------------
+   Statement Month
+------------------------------------------ */
 
-        if (statementMonthEl) {
+if (month) {
 
-            statementMonthEl.textContent =
-                formatStatementMonth(
-                    selectedStatement.month
-                );
+    headerMonth.textContent =
+        formatStatementMonth(month);
 
-        }
+} else {
 
+    headerMonth.textContent =
+        "All Months";
+}
+
+
+/* ------------------------------------------
+   Header Statement Data
+------------------------------------------ */
+
+if (statements.length > 0) {
+
+    /* --------------------------------------
+       Specific Card Selected
+    -------------------------------------- */
+
+    if (card) {
+
+        const statement =
+            statements[statements.length - 1];
 
         const statementAmount =
             Number(
-                selectedStatement.amount ??
-                selectedStatement.total ??
-                selectedStatement.statementAmount ??
+                statement.amount ??
+                statement.statementAmount ??
+                statement.total ??
+                0
+            );
+
+        headerAmount.textContent =
+            `BDT ${statementAmount.toLocaleString(
+                "en-US",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            )}`;
+
+        headerStatementDate.textContent =
+            formatReportDate(
+                statement.statementDate
+            );
+
+        headerDueDate.textContent =
+            formatReportDate(
+                statement.dueDate
+            );
+
+        headerStatus.textContent =
+            statement.status || "-";
+    }
+
+
+    /* --------------------------------------
+       All Cards Selected
+    -------------------------------------- */
+
+    else {
+
+        const totalStatementAmount =
+            statements.reduce(
+                (sum, statement) => {
+
+                    return sum +
+                        Number(
+                            statement.amount ??
+                            statement.statementAmount ??
+                            statement.total ??
+                            0
+                        );
+
+                },
                 0
             );
 
 
-        const statementAmountEl =
-            document.getElementById(
-                "printStatementAmount"
-            );
-
-        if (statementAmountEl) {
-
-            statementAmountEl.textContent =
-                `BDT ${statementAmount.toLocaleString(
-                    "en-BD",
-                    {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }
-                )}`;
-
-        }
+        headerAmount.textContent =
+            `BDT ${totalStatementAmount.toLocaleString(
+                "en-US",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            )}`;
 
 
-        const statementDateEl =
-            document.getElementById(
-                "printStatementDate"
-            );
+        /* -------------------------------
+           Statement Date
+        -------------------------------- */
 
-        if (statementDateEl) {
+        const statementDates =
+            [
+                ...new Set(
+                    statements
+                        .map(
+                            s =>
+                                s.statementDate
+                        )
+                        .filter(Boolean)
+                )
+            ];
 
-            statementDateEl.textContent =
-                formatReportDate(
-                    selectedStatement.statementDate
-                );
-
-        }
-
-
-        const dueDateEl =
-            document.getElementById(
-                "printDueDate"
-            );
-
-        if (dueDateEl) {
-
-            dueDateEl.textContent =
-                formatReportDate(
-                    selectedStatement.dueDate
-                );
-
-        }
+        headerStatementDate.textContent =
+            statementDates.length === 1
+                ? formatReportDate(
+                    statementDates[0]
+                )
+                : "Multiple";
 
 
-        const statusEl =
-            document.getElementById(
-                "printStatementStatus"
-            );
+        /* -------------------------------
+           Due Date
+        -------------------------------- */
 
-        if (statusEl) {
+        const dueDates =
+            [
+                ...new Set(
+                    statements
+                        .map(
+                            s =>
+                                s.dueDate
+                        )
+                        .filter(Boolean)
+                )
+            ];
 
-            statusEl.textContent =
-                selectedStatement.status ||
-                "-";
+        headerDueDate.textContent =
+            dueDates.length === 1
+                ? formatReportDate(
+                    dueDates[0]
+                )
+                : "Multiple";
 
-        }
 
+        /* -------------------------------
+           Status
+        -------------------------------- */
+
+        const statuses =
+            [
+                ...new Set(
+                    statements
+                        .map(
+                            s =>
+                                s.status
+                        )
+                        .filter(Boolean)
+                )
+            ];
+
+        headerStatus.textContent =
+            statuses.length === 1
+                ? statuses[0]
+                : "Multiple";
     }
 
+} else {
+
+    headerAmount.textContent =
+        "BDT 0.00";
+
+    headerStatementDate.textContent =
+        "-";
+
+    headerDueDate.textContent =
+        "-";
+
+    headerStatus.textContent =
+        "-";
+}
+        
+
+
+        
+        
 
     // ==========================================
     // STATEMENT SUMMARY TABLE
