@@ -673,7 +673,9 @@ function getCreditCardStatementMonth(transaction) {
    GENERATE CREDIT REPORT
 ========================================================= */
 
-function generateCreditReport() {
+
+
+   function generateCreditReport() {
 
     const card =
         document.getElementById("reportCard")?.value || "";
@@ -717,7 +719,6 @@ function generateCreditReport() {
                 t.isCreditCardExpense === true ||
                 account?.type === "creditcard"
             );
-
         });
 
 
@@ -748,7 +749,6 @@ function generateCreditReport() {
             statements.filter(
                 s => s.card === card
             );
-
     }
 
 
@@ -758,12 +758,61 @@ function generateCreditReport() {
 
     if (month) {
 
+        // --------------------------------------
+        // Filter Purchases by Statement Month
+        // --------------------------------------
+
         purchases =
-            purchases.filter(
-                t =>
-                    getCreditCardStatementMonth(t)
-                    === month
-            );
+            purchases.filter(t => {
+
+                const account =
+                    accounts.find(
+                        a => a.name === t.account
+                    );
+
+                const statementDay =
+                    Number(
+                        account?.statementDay || 5
+                    );
+
+                const trxDate =
+                    new Date(t.date);
+
+                if (
+                    isNaN(
+                        trxDate.getTime()
+                    )
+                ) {
+                    return false;
+                }
+
+                let statementDate =
+                    new Date(trxDate);
+
+                if (
+                    trxDate.getDate() >
+                    statementDay
+                ) {
+
+                    statementDate.setMonth(
+                        statementDate.getMonth() + 1
+                    );
+                }
+
+                const statementMonth =
+                    `${statementDate.getFullYear()}-${String(
+                        statementDate.getMonth() + 1
+                    ).padStart(2, "0")}`;
+
+                return (
+                    statementMonth === month
+                );
+            });
+
+
+        // --------------------------------------
+        // Filter Payments
+        // --------------------------------------
 
         payments =
             payments.filter(
@@ -771,23 +820,21 @@ function generateCreditReport() {
                     p.statementMonth === month
             );
 
+
+        // --------------------------------------
+        // Filter Statements
+        // --------------------------------------
+
         statements =
             statements.filter(
                 s =>
                     s.month === month
             );
-
     }
 
 
     // ==========================================
-    // FROM DATE
-    //
-    // IMPORTANT:
-    // Date filter is applied to transactions/
-    // payments only.
-    //
-    // Statement month logic is not changed.
+    // FROM DATE FILTER
     // ==========================================
 
     if (fromDate) {
@@ -795,22 +842,34 @@ function generateCreditReport() {
         purchases =
             purchases.filter(
                 t =>
-                    String(t.date)
-                    >= fromDate
+                    t.date >= fromDate
             );
 
         payments =
             payments.filter(
                 p =>
-                    String(p.paymentDate)
-                    >= fromDate
+                    p.paymentDate >= fromDate
             );
 
+        statements =
+            statements.filter(
+                s => {
+
+                    const statementDate =
+                        s.statementDate ||
+                        `${s.month}-01`;
+
+                    return (
+                        statementDate >=
+                        fromDate
+                    );
+                }
+            );
     }
 
 
     // ==========================================
-    // TO DATE
+    // TO DATE FILTER
     // ==========================================
 
     if (toDate) {
@@ -818,17 +877,29 @@ function generateCreditReport() {
         purchases =
             purchases.filter(
                 t =>
-                    String(t.date)
-                    <= toDate
+                    t.date <= toDate
             );
 
         payments =
             payments.filter(
                 p =>
-                    String(p.paymentDate)
-                    <= toDate
+                    p.paymentDate <= toDate
             );
 
+        statements =
+            statements.filter(
+                s => {
+
+                    const statementDate =
+                        s.statementDate ||
+                        `${s.month}-01`;
+
+                    return (
+                        statementDate <=
+                        toDate
+                    );
+                }
+            );
     }
 
 
@@ -840,7 +911,9 @@ function generateCreditReport() {
         purchases.reduce(
             (sum, t) =>
                 sum +
-                Number(t.amount || 0),
+                Number(
+                    t.amount || 0
+                ),
             0
         );
 
@@ -851,17 +924,17 @@ function generateCreditReport() {
 
     const reportEMI =
         statements.reduce(
-            (sum, s) => {
+            (sum, statement) => {
 
                 if (
                     Array.isArray(
-                        s.emiDetails
+                        statement.emiDetails
                     )
                 ) {
 
                     return (
                         sum +
-                        s.emiDetails.reduce(
+                        statement.emiDetails.reduce(
                             (
                                 emiSum,
                                 emi
@@ -873,16 +946,14 @@ function generateCreditReport() {
                             0
                         )
                     );
-
                 }
 
                 return (
                     sum +
                     Number(
-                        s.emiAmount || 0
+                        statement.emiAmount || 0
                     )
                 );
-
             },
             0
         );
@@ -896,7 +967,9 @@ function generateCreditReport() {
         payments.reduce(
             (sum, p) =>
                 sum +
-                Number(p.amount || 0),
+                Number(
+                    p.amount || 0
+                ),
             0
         );
 
@@ -935,7 +1008,6 @@ function generateCreditReport() {
                     maximumFractionDigits: 2
                 }
             )}`;
-
     }
 
 
@@ -954,7 +1026,6 @@ function generateCreditReport() {
                     maximumFractionDigits: 2
                 }
             )}`;
-
     }
 
 
@@ -973,7 +1044,6 @@ function generateCreditReport() {
                     maximumFractionDigits: 2
                 }
             )}`;
-
     }
 
 
@@ -992,239 +1062,310 @@ function generateCreditReport() {
                     maximumFractionDigits: 2
                 }
             )}`;
-
     }
 
 
     // ==========================================
-    // STATEMENT HEADER
+    // PRINT / PDF REPORT HEADER
     // ==========================================
 
-   
-                
-/* ==========================================
-   CREDIT REPORT HEADER
-========================================== */
+    const headerCard =
+        document.getElementById(
+            "printReportCard"
+        );
 
-const headerCard =
-    document.getElementById("printReportCard");
+    const headerMonth =
+        document.getElementById(
+            "printStatementMonth"
+        );
 
-const headerMonth =
-    document.getElementById("printStatementMonth");
+    const headerAmount =
+        document.getElementById(
+            "printStatementAmount"
+        );
 
-const headerAmount =
-    document.getElementById("printStatementAmount");
+    const headerStatementDate =
+        document.getElementById(
+            "printStatementDate"
+        );
 
-const headerStatementDate =
-    document.getElementById("printStatementDate");
+    const headerDueDate =
+        document.getElementById(
+            "printDueDate"
+        );
 
-const headerDueDate =
-    document.getElementById("printDueDate");
-
-const headerStatus =
-    document.getElementById("printStatementStatus");
-
-
-/* ------------------------------------------
-   Card Name
------------------------------------------- */
-
-if (card) {
-
-    headerCard.textContent = card;
-
-} else {
-
-    headerCard.textContent =
-        "All Credit Cards";
-}
+    const headerStatus =
+        document.getElementById(
+            "printStatementStatus"
+        );
 
 
-/* ------------------------------------------
-   Statement Month
------------------------------------------- */
+    // ------------------------------------------
+    // CARD NAME
+    // ------------------------------------------
 
-if (month) {
+    if (headerCard) {
 
-    headerMonth.textContent =
-        formatStatementMonth(month);
-
-} else {
-
-    headerMonth.textContent =
-        "All Months";
-}
-
-
-/* ------------------------------------------
-   Header Statement Data
------------------------------------------- */
-
-if (statements.length > 0) {
-
-    /* --------------------------------------
-       Specific Card Selected
-    -------------------------------------- */
-
-    if (card) {
-
-        const statement =
-            statements[statements.length - 1];
-
-        const statementAmount =
-            Number(
-                statement.amount ??
-                statement.statementAmount ??
-                statement.total ??
-                0
-            );
-
-        headerAmount.textContent =
-            `BDT ${statementAmount.toLocaleString(
-                "en-US",
-                {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }
-            )}`;
-
-        headerStatementDate.textContent =
-            formatReportDate(
-                statement.statementDate
-            );
-
-        headerDueDate.textContent =
-            formatReportDate(
-                statement.dueDate
-            );
-
-        headerStatus.textContent =
-            statement.status || "-";
+        headerCard.textContent =
+            card || "All Credit Cards";
     }
 
 
-    /* --------------------------------------
-       All Cards Selected
-    -------------------------------------- */
+    // ------------------------------------------
+    // STATEMENT MONTH
+    // ------------------------------------------
 
-    else {
+    if (headerMonth) {
 
-        const totalStatementAmount =
-            statements.reduce(
-                (sum, statement) => {
+        headerMonth.textContent =
+            month
+                ? formatStatementMonth(month)
+                : "All Months";
+    }
 
-                    return sum +
-                        Number(
-                            statement.amount ??
-                            statement.statementAmount ??
-                            statement.total ??
-                            0
+
+    // ------------------------------------------
+    // HEADER STATEMENT DATA
+    // ------------------------------------------
+
+    if (statements.length > 0) {
+
+
+        // ======================================
+        // SPECIFIC CARD SELECTED
+        // ======================================
+
+        if (card) {
+
+            const statement =
+                statements[
+                    statements.length - 1
+                ];
+
+
+            const statementAmount =
+                Number(
+                    statement.amount ??
+                    statement.statementAmount ??
+                    statement.total ??
+                    0
+                );
+
+
+            if (headerAmount) {
+
+                headerAmount.textContent =
+                    `BDT ${statementAmount.toLocaleString(
+                        "en-BD",
+                        {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }
+                    )}`;
+            }
+
+
+            if (headerStatementDate) {
+
+                headerStatementDate.textContent =
+                    formatReportDate(
+                        statement.statementDate
+                    );
+            }
+
+
+            if (headerDueDate) {
+
+                headerDueDate.textContent =
+                    formatReportDate(
+                        statement.dueDate
+                    );
+            }
+
+
+            if (headerStatus) {
+
+                headerStatus.textContent =
+                    statement.status || "-";
+            }
+
+        }
+
+
+        // ======================================
+        // ALL CARDS SELECTED
+        // ======================================
+
+        else {
+
+            /*
+             * statements already contains:
+             *
+             * - Selected Statement Month
+             * - Selected Date Range
+             *
+             * So here we simply calculate
+             * the combined total of all cards.
+             */
+
+            const totalStatementAmount =
+                statements.reduce(
+                    (sum, statement) => {
+
+                        return (
+                            sum +
+                            Number(
+                                statement.amount ??
+                                statement.statementAmount ??
+                                statement.total ??
+                                0
+                            )
                         );
 
-                },
-                0
-            );
+                    },
+                    0
+                );
 
 
-        headerAmount.textContent =
-            `BDT ${totalStatementAmount.toLocaleString(
-                "en-US",
-                {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }
-            )}`;
+            // ----------------------------------
+            // TOTAL STATEMENT AMOUNT
+            // ----------------------------------
+
+            if (headerAmount) {
+
+                headerAmount.textContent =
+                    `BDT ${totalStatementAmount.toLocaleString(
+                        "en-BD",
+                        {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }
+                    )}`;
+            }
 
 
-        /* -------------------------------
-           Statement Date
-        -------------------------------- */
+            // ----------------------------------
+            // STATEMENT DATE
+            // ----------------------------------
 
-        const statementDates =
-            [
-                ...new Set(
-                    statements
-                        .map(
-                            s =>
-                                s.statementDate
+            const statementDates =
+                [
+                    ...new Set(
+                        statements
+                            .map(
+                                s =>
+                                    s.statementDate
+                            )
+                            .filter(Boolean)
+                    )
+                ];
+
+
+            if (headerStatementDate) {
+
+                headerStatementDate.textContent =
+                    statementDates.length === 1
+                        ? formatReportDate(
+                            statementDates[0]
                         )
-                        .filter(Boolean)
-                )
-            ];
-
-        headerStatementDate.textContent =
-            statementDates.length === 1
-                ? formatReportDate(
-                    statementDates[0]
-                )
-                : "Multiple";
+                        : statementDates.length > 1
+                            ? "Multiple"
+                            : "-";
+            }
 
 
-        /* -------------------------------
-           Due Date
-        -------------------------------- */
+            // ----------------------------------
+            // DUE DATE
+            // ----------------------------------
 
-        const dueDates =
-            [
-                ...new Set(
-                    statements
-                        .map(
-                            s =>
-                                s.dueDate
+            const dueDates =
+                [
+                    ...new Set(
+                        statements
+                            .map(
+                                s =>
+                                    s.dueDate
+                            )
+                            .filter(Boolean)
+                    )
+                ];
+
+
+            if (headerDueDate) {
+
+                headerDueDate.textContent =
+                    dueDates.length === 1
+                        ? formatReportDate(
+                            dueDates[0]
                         )
-                        .filter(Boolean)
-                )
-            ];
-
-        headerDueDate.textContent =
-            dueDates.length === 1
-                ? formatReportDate(
-                    dueDates[0]
-                )
-                : "Multiple";
+                        : dueDates.length > 1
+                            ? "Multiple"
+                            : "-";
+            }
 
 
-        /* -------------------------------
-           Status
-        -------------------------------- */
+            // ----------------------------------
+            // STATUS
+            // ----------------------------------
 
-        const statuses =
-            [
-                ...new Set(
-                    statements
-                        .map(
-                            s =>
-                                s.status
-                        )
-                        .filter(Boolean)
-                )
-            ];
+            const statuses =
+                [
+                    ...new Set(
+                        statements
+                            .map(
+                                s =>
+                                    s.status
+                            )
+                            .filter(Boolean)
+                    )
+                ];
 
-        headerStatus.textContent =
-            statuses.length === 1
-                ? statuses[0]
-                : "Multiple";
+
+            if (headerStatus) {
+
+                headerStatus.textContent =
+                    statuses.length === 1
+                        ? statuses[0]
+                        : statuses.length > 1
+                            ? "Multiple"
+                            : "-";
+            }
+        }
+
+    } else {
+
+        // --------------------------------------
+        // NO STATEMENT
+        // --------------------------------------
+
+        if (headerAmount) {
+
+            headerAmount.textContent =
+                "BDT 0.00";
+        }
+
+
+        if (headerStatementDate) {
+
+            headerStatementDate.textContent =
+                "-";
+        }
+
+
+        if (headerDueDate) {
+
+            headerDueDate.textContent =
+                "-";
+        }
+
+
+        if (headerStatus) {
+
+            headerStatus.textContent =
+                "-";
+        }
     }
 
-} else {
-
-    headerAmount.textContent =
-        "BDT 0.00";
-
-    headerStatementDate.textContent =
-        "-";
-
-    headerDueDate.textContent =
-        "-";
-
-    headerStatus.textContent =
-        "-";
-}
-        
-
-
-        
-        
 
     // ==========================================
     // STATEMENT SUMMARY TABLE
@@ -1239,6 +1380,7 @@ if (statements.length > 0) {
 
         summaryTable.innerHTML = "";
 
+
         statements.forEach(
             statement => {
 
@@ -1247,76 +1389,66 @@ if (statements.length > 0) {
                         "tr"
                     );
 
+
                 row.innerHTML = `
 
                     <td>
-                        ${
-                            formatStatementMonth(
-                                statement.month
-                            )
-                        }
+                        ${formatStatementMonth(
+                            statement.month
+                        )}
                     </td>
 
                     <td>
-                        BDT ${
-                            Number(
-                                statement.amount ??
-                                statement.total ??
-                                statement.statementAmount ??
-                                0
-                            ).toLocaleString(
-                                "en-BD",
-                                {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                }
-                            )
-                        }
+                        BDT ${Number(
+                            statement.amount ??
+                            statement.total ??
+                            statement.statementAmount ??
+                            0
+                        ).toLocaleString(
+                            "en-BD",
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        )}
                     </td>
 
                     <td>
-                        BDT ${
-                            Number(
-                                statement.paid || 0
-                            ).toLocaleString(
-                                "en-BD",
-                                {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                }
-                            )
-                        }
+                        BDT ${Number(
+                            statement.paid || 0
+                        ).toLocaleString(
+                            "en-BD",
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        )}
                     </td>
 
                     <td>
-                        BDT ${
-                            Number(
-                                statement.remaining || 0
-                            ).toLocaleString(
-                                "en-BD",
-                                {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                }
-                            )
-                        }
+                        BDT ${Number(
+                            statement.remaining || 0
+                        ).toLocaleString(
+                            "en-BD",
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        )}
                     </td>
 
                     <td>
-                        ${
-                            statement.status || "-"
-                        }
+                        ${statement.status || "-"}
                     </td>
 
                 `;
 
+
                 summaryTable.appendChild(
                     row
                 );
-
             }
         );
-
     }
 
 
@@ -1334,8 +1466,10 @@ if (statements.length > 0) {
     renderOutstandingTrend(
         statements
     );
-
-}
+}                 
+    
+        
+                  
 
 
 
