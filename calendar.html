@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Manager - Tarek</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+</head>
+<body>
+
+<div class="app">
+
+     <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+            <h2> <a href="index.html">Expense Manager</a></h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+
+                <li>
+                    <a href="index.html">
+                        📊 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="transactions.html">
+                        💰 Transactions
+                    </a>
+                </li>
+
+                <li>
+                    <a href="accounts.html">
+                        🏦 Accounts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="creditcard.html">
+                        💳 Credit Card
+                    </
+				
+				<li>
+					<a href="loan.html">
+						💵 Loans
+					</a>
+				</li>
+
+                <li>
+                    <a href="categories.html">
+                        📂 Categories
+                    </a>
+                </li>
+
+                <li>
+                    <a href="budget.html">
+                        🎯 Budget
+                    </a>
+                </li>
+
+                <li>
+                    <a href="goals.html">
+                        🚀 Goals
+                    </a>
+                </li>
+
+                <li>
+                    <a href="charts.html">
+                        💹 Charts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="reports.html">
+                        📈 Reports
+                    </a>
+                </li>
+				<li>
+
+				<a href="transfer.html">
+
+					🔄 Account Transfer
+
+				</a>
+
+				</li>
+				<li>
+				<a href="statement.html">
+					📄 Account Statement
+				</a>
+				</li>
+
+				<li>
+
+					<a href="networth.html">
+
+						💎 Net Worth
+
+					</a>
+
+				</li>
+
+                <li>
+                    <a href="recurring.html">
+                        🔁 Recurring
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        ⚙ Settings
+                    </a>
+                </li>
+				<li>
+                    <a href="backup.html">
+                        💾 Backup & Restore
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Header -->
+        <header class="header">
+
+            <div class="header-left">
+
+                <button class="menu-toggle" id="menuToggle">
+                    ☰
+                </button>
+
+                <div class="header-title">
+                    📅 Calender 
+                </div>
+
+            </div>
+
+            <div class="header-right">
+
+
+            </div>
+
+        </header>
+
+        <!-- Content -->
+        <section class="content">
+        
+
+<div class="kpi-grid mb-20">
+
+    <div class="card">
+        <div class="card-title">
+            Monthly Income
+        </div>
+
+        <div
+            id="calendarMonthlyIncome"
+            class="card-value"
+        >
+            ৳ 0
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            Monthly Expense
+        </div>
+
+        <div
+            id="calendarMonthlyExpense"
+            class="card-value"
+        >
+            ৳ 0
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            Monthly Net
+        </div>
+
+        <div
+            id="calendarMonthlyNet"
+            class="card-value"
+        >
+            ৳ 0
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            Transactions
+        </div>
+
+        <div
+            id="calendarMonthlyTransactions"
+            class="card-value"
+        >
+            0
+        </div>
+    </div>
+
+</div>
+
+
+        <!-- =============================
+             CALENDAR CARD
+        ============================== -->
+
+        <div class="card calendar-card">
+
+
+            <!-- =========================
+                 CALENDAR HEADER
+            ========================== -->
+
+            <div class="calendar-header">
+
+
+                <!-- PREVIOUS MONTH -->
+
+                <button
+                    type="button"
+                    id="calendarPrevBtn"
+                    class="btn btn-outline"
+                >
+
+                    ‹
+
+                </button>
+
+
+                <!-- MONTH / YEAR -->
+
+                <div
+                    id="calendarMonthYear"
+                    class="calendar-month-year"
+                >
+
+                    August 2026
+
+                </div>
+
+
+                <!-- NEXT MONTH -->
+
+                <button
+                    type="button"
+                    id="calendarNextBtn"
+                    class="btn btn-outline"
+                >
+
+                    ›
+
+                </button>
+
+
+                <!-- TODAY -->
+
+                <button
+                    type="button"
+                    id="calendarTodayBtn"
+                    class="btn btn-primary"
+                >
+
+                    Today
+
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 WEEK DAYS
+            ========================== -->
+
+            <div class="calendar-weekdays">
+
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+
+            </div>
+
+
+            <!-- =========================
+                 CALENDAR GRID
+            ========================== -->
+		<div class="calendar-wrapper">
+            <div
+                id="calendarGrid"
+                class="calendar-grid"
+            >
+
+                <!--
+                    Calendar dates
+                    generated by calendar.js
+                -->
+
+            </div>
+		</div>
+
+        </div>
+
+
+
+
+
+
+   
+
+<!-- =================================
+     CALENDAR TRANSACTION DETAILS MODAL
+================================= -->
+
+<div
+    id="calendarTransactionDetailsModal"
+    class="modal-overlay"
+    style="display:none;"
+>
+
+    <div
+        class="modal-box"
+        style="
+            max-width:900px;
+            width:95%;
+        "
+    >
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:15px;
+            "
+        >
+
+            <h3
+                id="calendarTransactionModalTitle"
+            >
+                Transaction Details
+            </h3>
+
+
+            <button
+                id="calendarTransactionModalClose"
+                class="txnModalClose"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div
+            style="
+                display:flex;
+                gap:8px;
+                align-items:center;
+            "
+        >
+
+            <button
+                id="calendarPrintBtn"
+                class="btn btn-secondary"
+            >
+                🖨 Print
+            </button>
+
+
+            <button
+                id="calendarPdfBtn"
+                class="btn btn-danger"
+            >
+                📄 PDF
+            </button>
+
+
+            <button
+                id="calendarExcelBtn"
+                class="btn btn-success"
+            >
+                📊 Excel
+            </button>
+
+        </div>
+
+
+        <div
+            style="
+                max-height:500px;
+                overflow:auto;
+            "
+        >
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+
+                        <th>Type</th>
+
+                        <th>Category</th>
+
+                        <th>Account</th>
+
+                        <th>Note</th>
+
+                        <th>Amount</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="calendarTransactionModalBody"
+                >
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+		   
+		
+        </section>
+
+    </main>
+
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Scripts -->
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    menuToggle?.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('show');
+    });
+
+    sidebarOverlay?.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+    });
+	
+	
+	
+const now = new Date();
+
+const monthYear = now.toLocaleString("en-US", {
+    month: "long",
+    year: "numeric"
+});
+
+
+</script>
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/calendar.js"></script>
+
+</body>
+</html>
